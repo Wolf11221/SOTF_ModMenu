@@ -10,7 +10,6 @@
         public static bool Hunger = false;
         public static bool Rested = false;
         public static bool Cold = false;
-        public static bool Vitality = false;
         public static bool Strength = false;
     }
 }

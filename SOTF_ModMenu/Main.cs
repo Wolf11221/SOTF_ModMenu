@@ -21,8 +21,6 @@ namespace SOTF_ModMenu
                     Settings.Health = !Settings.Health;
                 if (UIHelper.Button("Max Stamina: ", Settings.Stamina))
                     Settings.Stamina = !Settings.Stamina;
-                if (UIHelper.Button("Max Vitality: ", Settings.Vitality))
-                    Settings.Vitality = !Settings.Vitality;
                 if (UIHelper.Button("Max Strength: ", Settings.Strength))
                     Settings.Strength = !Settings.Strength;
                 if (UIHelper.Button("No Cold: ", Settings.Cold))
@@ -54,8 +52,6 @@ namespace SOTF_ModMenu
                 }
                 if (Settings.Stamina)
                     vitals._stamina._currentValue = vitals._stamina._max;
-                if (Settings.Vitality)
-                    vitals._vitality._currentValue = vitals._vitality._max;
                 if (Settings.Cold)
                     vitals._isCold = false;
                 if (Settings.Hunger)
