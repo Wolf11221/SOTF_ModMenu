@@ -2,6 +2,7 @@
 {
     public static class Settings
     {
+        public static bool Visible = false;
         
         //Vitals
         public static bool Stamina = false;

@@ -34,6 +34,9 @@
     <Reference Include="Sons">
       <HintPath>Libs\Sons.dll</HintPath>
     </Reference>
+    <Reference Include="Sons.Input">
+      <HintPath>Libs\Sons.Input.dll</HintPath>
+    </Reference>
     <Reference Include="Sons.Item">
       <HintPath>Libs\Sons.Item.dll</HintPath>
     </Reference>

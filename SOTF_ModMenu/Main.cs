@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Sons.Input;
+using UnityEngine;
 using TheForest.Utils;
 using SOTF_ModMenu.Utilities;
 
@@ -15,8 +16,9 @@ namespace SOTF_ModMenu
 
             private void OnGUI()
             {
+                if(!Settings.Visible) return;
+                
                 UIHelper.Begin("Vitals", 10, 10, 150, 200, 2, 20, 2);
-
                 if (UIHelper.Button("Max Health: ", Settings.Health))
                     Settings.Health = !Settings.Health;
                 if (UIHelper.Button("Max Stamina: ", Settings.Stamina))
@@ -38,6 +40,8 @@ namespace SOTF_ModMenu
 
             private void Update()
             {
+                ShowMenu();
+                
                 if(_isvitalsNull)
                 {
                     vitals = FindObjectOfType<Vitals>();
@@ -62,6 +66,33 @@ namespace SOTF_ModMenu
                     vitals._rested._currentValue = vitals._rested._max;
                 if (Settings.Strength)
                     vitals._strength._currentValue = vitals._strength._max;
+            }
+
+            private void ShowMenu()
+            {
+                if (Input.GetKeyDown(KeyCode.Tab))
+                {
+                    Settings.Visible = !Settings.Visible;
+                    if(Settings.Visible)
+                    {
+                        InputSystem.SetState(0, true);
+                        Cursor.visible = true;
+                        Cursor.lockState = CursorLockMode.None;
+                        return;
+                    }
+                    if (LocalPlayer.IsInWorld)
+                    {
+                        InputSystem.SetState(0, false);
+                        Cursor.visible = false;
+                        Cursor.lockState = CursorLockMode.Locked;
+                    }
+                    if (LocalPlayer.IsInInventory)
+                    {
+                        InputSystem.SetState(0, false);
+                        Cursor.visible = false;
+                        Cursor.lockState = CursorLockMode.Locked;
+                    }
+                }
             }
             
             private Vitals vitals;
