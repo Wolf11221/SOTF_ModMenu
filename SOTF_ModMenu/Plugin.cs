@@ -16,7 +16,7 @@ namespace SOTF_ModMenu
             MODNAME = "SOTF_ModMenu",
             AUTHOR = "Nie",
             GUID = AUTHOR + "_" + MODNAME,
-            VERSION = "1.0.0";
+            VERSION = "1.0.1";
 
         public Plugin()
         {
