@@ -40,7 +40,7 @@ namespace SOTF_ModMenu
 
                 //World
                 UIHelper.Begin("World", 165, 10, 150, 100, 2, 20, 2);
-                if (UIHelper.Button("instant Build: ", Settings.InstantBuild))
+                if (UIHelper.Button("Instant Build: ", Settings.InstantBuild))
                     Settings.InstantBuild = !Settings.InstantBuild;
                 
                 //Item Spawner
