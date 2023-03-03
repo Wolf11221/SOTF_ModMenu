@@ -12,5 +12,9 @@
         public static bool Rested = false;
         public static bool Cold = false;
         public static bool Strength = false;
+        public static bool LungCapacity = false;
+        
+        //World
+        public static bool InstantBuild = false;
     }
 }

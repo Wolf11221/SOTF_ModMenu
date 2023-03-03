@@ -1,4 +1,7 @@
-﻿using Sons.Input;
+﻿using Sons.Crafting.Structures;
+using Sons.Input;
+using Sons.Items.Core;
+using Sons.StatSystem;
 using UnityEngine;
 using TheForest.Utils;
 using SOTF_ModMenu.Utilities;
@@ -9,17 +12,23 @@ namespace SOTF_ModMenu
     {
         public class MyMonoBehaviour : MonoBehaviour
         {
+            private string TextFieldItemID = "392";
+            private string TextFieldAmount = "1";
+
             private void OnGUI()
             {
                 if(!Settings.Visible) return;
                 
-                UIHelper.Begin("Vitals", 10, 10, 150, 200, 2, 20, 2);
+                //Vitals
+                UIHelper.Begin("Vitals", 10, 10, 150, 197, 2, 20, 2);
                 if (UIHelper.Button("Max Health: ", Settings.Health))
                     Settings.Health = !Settings.Health;
                 if (UIHelper.Button("Max Stamina: ", Settings.Stamina))
                     Settings.Stamina = !Settings.Stamina;
                 if (UIHelper.Button("Max Strength: ", Settings.Strength))
                     Settings.Strength = !Settings.Strength;
+                if (UIHelper.Button("Max LungCapacity: ", Settings.LungCapacity))
+                    Settings.LungCapacity = !Settings.LungCapacity;
                 if (UIHelper.Button("No Cold: ", Settings.Cold))
                     Settings.Cold = !Settings.Cold;
                 if (UIHelper.Button("No Hunger: ", Settings.Hunger))
@@ -29,14 +38,40 @@ namespace SOTF_ModMenu
                 if (UIHelper.Button("Always Rested: ", Settings.Rested))
                     Settings.Rested = !Settings.Rested;
 
-                //UIHelper.Begin("Player", 165, 10, 150, 200, 2, 20, 2);
-
+                //World
+                UIHelper.Begin("World", 165, 10, 150, 100, 2, 20, 2);
+                if (UIHelper.Button("instant Build: ", Settings.InstantBuild))
+                    Settings.InstantBuild = !Settings.InstantBuild;
+                
+                //Item Spawner
+                UIHelper.Begin("Item Spawner", 10, 212, 150, 85, 2, 20, 2); //190
+                UIHelper.Label("Enter id & amount");
+                TextFieldItemID = GUI.TextField(new Rect(12, 252, 40, 20), TextFieldItemID);
+                TextFieldAmount = GUI.TextField(new Rect(55, 252, 30, 20), TextFieldAmount);
+                if (GUI.Button(new Rect(88, 252, 70, 20), "Spawn"))
+                {
+                    int ItemId;
+                    int Amount;
+                    
+                    try
+                    {
+                        ItemId = int.Parse(TextFieldItemID);
+                        Amount = int.Parse(TextFieldAmount);
+                        
+                        LocalPlayer.Inventory.AddItem(ItemId, Amount);
+                    }
+                    catch
+                    {
+                        Plugin.log.LogError("Failed to add item!");
+                    }
+                }
+                GUI.Button(new Rect(12, 274, 146, 20), "Show All ID's (Soon!)");
             }
 
             private void Update()
             {
                 ShowMenu();
-                
+
                 if(vitals == null)
                 {
                     vitals = FindObjectOfType<Vitals>();
@@ -51,8 +86,11 @@ namespace SOTF_ModMenu
                 }
                 if (Settings.Stamina)
                     vitals._stamina._currentValue = vitals._stamina._max;
-                if (Settings.Cold)
-                    vitals._isCold = false;
+                if (Settings.Cold){
+                    vitals._temperature._currentValue = vitals._temperature._max;
+                    vitals._temperature._baseValue = vitals._temperature._max;
+                    vitals._isCold = Settings.Cold;
+                }
                 if (Settings.Hunger)
                     vitals._fullness._currentValue = vitals._fullness._max;
                 if (Settings.Thirst)
@@ -61,6 +99,13 @@ namespace SOTF_ModMenu
                     vitals._rested._currentValue = vitals._rested._max;
                 if (Settings.Strength)
                     vitals._strength._currentValue = vitals._strength._max;
+                if (Settings.LungCapacity)
+                    vitals.LungBreathing.CurrentLungAir = vitals.LungBreathing.MaxLungAirCapacity;
+
+                //World
+                StructureCraftingSystem scs = LocalPlayer.StructureCraftingSystem;
+                scs.InstantBuild = Settings.InstantBuild;
+                    
             }
             
             private void ShowMenu()
@@ -89,7 +134,7 @@ namespace SOTF_ModMenu
                     }
                 }
             }
-
+            
             private Vitals vitals;
         }
     }
