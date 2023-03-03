@@ -9,11 +9,6 @@ namespace SOTF_ModMenu
     {
         public class MyMonoBehaviour : MonoBehaviour
         {
-            private void Start()
-            {
-                _isvitalsNull = vitals == null;
-            }
-
             private void OnGUI()
             {
                 if(!Settings.Visible) return;
@@ -42,7 +37,7 @@ namespace SOTF_ModMenu
             {
                 ShowMenu();
                 
-                if(_isvitalsNull)
+                if(vitals == null)
                 {
                     vitals = FindObjectOfType<Vitals>();
                 }
@@ -67,7 +62,7 @@ namespace SOTF_ModMenu
                 if (Settings.Strength)
                     vitals._strength._currentValue = vitals._strength._max;
             }
-
+            
             private void ShowMenu()
             {
                 if (Input.GetKeyDown(KeyCode.Tab))
@@ -94,9 +89,8 @@ namespace SOTF_ModMenu
                     }
                 }
             }
-            
+
             private Vitals vitals;
-            private bool _isvitalsNull;
         }
     }
 }
