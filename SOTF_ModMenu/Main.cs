@@ -50,15 +50,11 @@ namespace SOTF_ModMenu
                 TextFieldAmount = GUI.TextField(new Rect(55, 252, 30, 20), TextFieldAmount);
                 if (GUI.Button(new Rect(88, 252, 70, 20), "Spawn"))
                 {
-                    int ItemId;
-                    int Amount;
-                    
                     try
                     {
-                        ItemId = int.Parse(TextFieldItemID);
-                        Amount = int.Parse(TextFieldAmount);
-                        
-                        LocalPlayer.Inventory.AddItem(ItemId, Amount);
+                        int itemID = int.Parse(TextFieldItemID);
+                        int amount = int.Parse(TextFieldAmount);
+                        LocalPlayer.Inventory.AddItem(itemID, amount);
                     }
                     catch
                     {
