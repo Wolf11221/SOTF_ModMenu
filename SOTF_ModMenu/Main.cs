@@ -105,7 +105,7 @@ namespace SOTF_ModMenu
                 //World
                 StructureCraftingSystem scs = LocalPlayer.StructureCraftingSystem;
                 scs.InstantBuild = Settings.InstantBuild;
-                    
+
             }
             
             private void ShowMenu()
@@ -120,13 +120,7 @@ namespace SOTF_ModMenu
                         Cursor.lockState = CursorLockMode.None;
                         return;
                     }
-                    if (LocalPlayer.IsInWorld)
-                    {
-                        InputSystem.SetState(0, false);
-                        Cursor.visible = false;
-                        Cursor.lockState = CursorLockMode.Locked;
-                    }
-                    if (LocalPlayer.IsInInventory)
+                    if (LocalPlayer.IsInWorld || LocalPlayer.IsInInventory || LocalPlayer.IsConstructing || LocalPlayer.IsInMidAction)
                     {
                         InputSystem.SetState(0, false);
                         Cursor.visible = false;
