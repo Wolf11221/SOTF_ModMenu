@@ -106,7 +106,7 @@ namespace SOTF_ModMenu
             
             private void ShowMenu()
             {
-                if (Input.GetKeyDown(Plugin.modmenuKeybind.Value))
+                if (Input.GetKeyDown(Plugin.ModmenuKeybind.Value))
                 {
                     Settings.Visible = !Settings.Visible;
                     if(Settings.Visible)
@@ -124,7 +124,7 @@ namespace SOTF_ModMenu
                     }
                 }
             }
-            
+
             private Vitals vitals;
         }
     }

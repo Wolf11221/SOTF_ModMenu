@@ -15,14 +15,13 @@ namespace SOTF_ModMenu
     public class Plugin : BasePlugin
     {
         public const string
-            MODNAME = "SOTF_ModMenu_Custom_Inputs",
-            AUTHOR = "Nie_and_Maalik",
+            MODNAME = "SOTF_ModMenu",
+            AUTHOR = "Nie",
             GUID = AUTHOR + "_" + MODNAME,
             VERSION = "1.1.2";
         
-        public static ConfigFile configFile = new ConfigFile(Path.Combine(Paths.ConfigPath, "SOTF ModMenu.cfg"), true);
-        public static ConfigEntry<KeyCode> modmenuKeybind = Plugin.configFile.Bind<KeyCode>("Hotkeys", "Toggle", (KeyCode)96, "Enables or disables the Mod Menu");
-        public static ManualLogSource Dlog = new ManualLogSource(nameof (Dlog));
+        public static ConfigFile ConfigFile = new (Path.Combine(Paths.ConfigPath, "SOTF ModMenu.cfg"), true);
+        public static ConfigEntry<KeyCode> ModmenuKeybind = ConfigFile.Bind("Hotkeys", "Toggle", KeyCode.Tilde, "Enables or disables the Mod Menu");
         public Plugin()
         {
             log = Log;
@@ -30,9 +29,6 @@ namespace SOTF_ModMenu
 
         public override void Load()
         {
-            // Test code
-            Log.LogInfo("Yeetus thy feetus!");
-
             try
             {
                 ClassInjector.RegisterTypeInIl2Cpp<Main.MyMonoBehaviour>();
@@ -57,7 +53,5 @@ namespace SOTF_ModMenu
         }
 
         public static ManualLogSource log;
-
-        public ConfigEntry<string> ConfigGreeting { get; private set; }
     }
 }

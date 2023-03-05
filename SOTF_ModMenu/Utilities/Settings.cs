@@ -3,6 +3,7 @@
     public static class Settings
     {
         public static bool Visible = false;
+        //public static bool HideHUD = false; //Soon
         
         //Vitals
         public static bool Stamina = false;

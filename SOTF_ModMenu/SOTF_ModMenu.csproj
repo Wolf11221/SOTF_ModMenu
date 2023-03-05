@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <AssemblyName>SOTF_ModMenu_CustomInput</AssemblyName>
-    <Description>Tainer for Sons Of The Forest by Nie, Config and Custom Input support added by Maalik</Description>
+    <AssemblyName>SOTF_ModMenu</AssemblyName>
+    <Description>Trainer for Sons Of The Forest by Nie, Config and Custom Input support added by Maalik</Description>
     <Version>1.1.2</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
@@ -12,7 +12,7 @@
       https://nuget.bepinex.dev/v3/index.json;
       https://nuget.samboy.dev/v3/index.json
     </RestoreAdditionalProjectSources>
-    <RootNamespace>SOTF_ModMenu_CustomInput</RootNamespace>
+    <RootNamespace>SOTF_ModMenu</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
