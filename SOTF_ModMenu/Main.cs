@@ -1,4 +1,4 @@
-﻿using Sons.Crafting.Structures;
+using Sons.Crafting.Structures;
 using Sons.Input;
 using Sons.Items.Core;
 using Sons.StatSystem;
@@ -106,7 +106,7 @@ namespace SOTF_ModMenu
             
             private void ShowMenu()
             {
-                if (Input.GetKeyDown(KeyCode.Tab))
+                if (Input.GetKeyDown(Plugin.modmenuKeybind.Value))
                 {
                     Settings.Visible = !Settings.Visible;
                     if(Settings.Visible)
