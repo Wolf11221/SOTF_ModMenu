@@ -18,10 +18,10 @@ namespace SOTF_ModMenu
             MODNAME = "SOTF_ModMenu",
             AUTHOR = "Nie",
             GUID = AUTHOR + "_" + MODNAME,
-            VERSION = "1.1.2";
+            VERSION = "1.1.3";
         
-        public static ConfigFile ConfigFile = new (Path.Combine(Paths.ConfigPath, "SOTF ModMenu.cfg"), true);
-        public static ConfigEntry<KeyCode> ModmenuKeybind = ConfigFile.Bind("Hotkeys", "Toggle", KeyCode.Tilde, "Enables or disables the Mod Menu");
+        public static ConfigFile ConfigFile = new (Path.Combine(Paths.ConfigPath, "SOTF_ModMenu.cfg"), true);
+        public static ConfigEntry<KeyCode> ModMenuKeybind = ConfigFile.Bind("Hotkeys", "Toggle", KeyCode.BackQuote, "Enables or disables the Mod Menu");
         public Plugin()
         {
             log = Log;
@@ -49,7 +49,7 @@ namespace SOTF_ModMenu
             {
                 log.LogError($"FAILED to register patches!");
             }
-            
+            log.LogInfo($"ModMenu toggle keybind set to: {ModMenuKeybind.Value}");
         }
 
         public static ManualLogSource log;

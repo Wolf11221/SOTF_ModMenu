@@ -106,8 +106,9 @@ namespace SOTF_ModMenu
             
             private void ShowMenu()
             {
-                if (Input.GetKeyDown(Plugin.ModmenuKeybind.Value))
+                if (Input.GetKeyDown(Plugin.ModMenuKeybind.Value))
                 {
+                    
                     Settings.Visible = !Settings.Visible;
                     if(Settings.Visible)
                     {
