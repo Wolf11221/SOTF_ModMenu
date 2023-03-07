@@ -58,6 +58,7 @@ namespace SOTF_ModMenu
             private void Update()
             {
                 ShowMenu();
+                SpawnItemHotkeyPressed();
 
                 if(vitals == null)
                 {
