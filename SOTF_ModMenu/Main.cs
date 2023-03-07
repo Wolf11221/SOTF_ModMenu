@@ -1,10 +1,10 @@
 using Sons.Crafting.Structures;
 using Sons.Input;
 using Sons.Items.Core;
-using Sons.StatSystem;
 using UnityEngine;
 using TheForest.Utils;
 using SOTF_ModMenu.Utilities;
+using UnityEngine.SceneManagement;
 
 namespace SOTF_ModMenu
 {
@@ -12,9 +12,6 @@ namespace SOTF_ModMenu
     {
         public class MyMonoBehaviour : MonoBehaviour
         {
-            private string TextFieldItemID = "392";
-            private string TextFieldAmount = "1";
-
             private void OnGUI()
             {
                 if(!Settings.Visible) return;
@@ -44,10 +41,10 @@ namespace SOTF_ModMenu
                     Settings.InstantBuild = !Settings.InstantBuild;
                 
                 //Item Spawner
-                UIHelper.Begin("Item Spawner", 10, 212, 150, 85, 2, 20, 2); //190
+                UIHelper.Begin("Item Spawner", 10, 212, 150, 85, 2, 20, 2);
                 UIHelper.Label("Enter id & amount");
-                TextFieldItemID = GUI.TextField(new Rect(12, 252, 40, 20), TextFieldItemID);
-                TextFieldAmount = GUI.TextField(new Rect(55, 252, 30, 20), TextFieldAmount);
+                Settings.TextFieldItemID = GUI.TextField(new Rect(12, 252, 40, 20), Settings.TextFieldItemID);
+                Settings.TextFieldAmount = GUI.TextField(new Rect(55, 252, 30, 20), Settings.TextFieldAmount);
                 if (GUI.Button(new Rect(88, 252, 70, 20), "Spawn"))
                 {
                     SpawnItem();
@@ -99,6 +96,7 @@ namespace SOTF_ModMenu
             {
                 ShowMenu();
                 SpawnItemHotkeyPressed();
+                HideHUDHotkeyPressed();
             }
             
             private void ShowMenu()
@@ -130,18 +128,38 @@ namespace SOTF_ModMenu
                     SpawnItem();
                 }
             }
+            private void HideHUDHotkeyPressed()
+            {
+                Settings.HideHUD = !Settings.HideHUD;
+                if (Input.GetKeyDown(Plugin.HideHUDKeybind.Value))
+                {
+                    HideHUD();
+                }
+            }
             
             private void SpawnItem()
             {
                 try
                 {
-                    int itemID = int.Parse(TextFieldItemID);
-                    int amount = int.Parse(TextFieldAmount);
+                    int itemID = int.Parse(Settings.TextFieldItemID);
+                    int amount = int.Parse(Settings.TextFieldAmount);
                     LocalPlayer.Inventory.AddItem(itemID, amount);
                 }
                 catch
                 {
                     Plugin.log.LogError("Failed to add item!");
+                }
+            }
+
+            private void HideHUD()
+            {
+                foreach (GameObject gObject in SceneManager.GetSceneByName("SonsMain").GetRootGameObjects())
+                {
+                    if (gObject.name == "PlayerStandin")
+                    {
+                        gObject.SetActive(Settings.HideHUD);
+                        break;
+                    }
                 }
             }
 

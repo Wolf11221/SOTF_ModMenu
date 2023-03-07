@@ -23,6 +23,7 @@ namespace SOTF_ModMenu
         public static ConfigFile ConfigFile = new (Path.Combine(Paths.ConfigPath, "SOTF_ModMenu.cfg"), true);
         public static ConfigEntry<KeyCode> ModMenuKeybind = ConfigFile.Bind("Hotkeys", "Toggle", KeyCode.BackQuote, "Enables or disables the Mod Menu");
         public static ConfigEntry<KeyCode> SpawnItemKeybind = ConfigFile.Bind("Hotkeys", "SpawnItem", KeyCode.F8, "Spawns the currently stored item ID");
+        public static ConfigEntry<KeyCode> HideHUDKeybind = ConfigFile.Bind("Hotkeys", "HideHUD", KeyCode.None, "Hides the in game HUD");
 
         public Plugin()
         {

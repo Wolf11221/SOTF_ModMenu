@@ -3,9 +3,8 @@
     public static class Settings
     {
         public static bool Visible = false;
-        //public static bool HideHUD = false; //Soon
+        public static bool HideHUD = false;
         
-        //Vitals
         public static bool Stamina = false;
         public static bool Thirst = false;
         public static bool Health = false;
@@ -15,7 +14,9 @@
         public static bool Strength = false;
         public static bool LungCapacity = false;
         
-        //World
         public static bool InstantBuild = false;
+        
+        public static string TextFieldItemID = "392";
+        public static string TextFieldAmount = "1";
     }
 }
