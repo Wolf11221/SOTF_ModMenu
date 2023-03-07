@@ -50,16 +50,7 @@ namespace SOTF_ModMenu
                 TextFieldAmount = GUI.TextField(new Rect(55, 252, 30, 20), TextFieldAmount);
                 if (GUI.Button(new Rect(88, 252, 70, 20), "Spawn"))
                 {
-                    try
-                    {
-                        int itemID = int.Parse(TextFieldItemID);
-                        int amount = int.Parse(TextFieldAmount);
-                        LocalPlayer.Inventory.AddItem(itemID, amount);
-                    }
-                    catch
-                    {
-                        Plugin.log.LogError("Failed to add item!");
-                    }
+                    SpawnItem();
                 }
                 GUI.Button(new Rect(12, 274, 146, 20), "Show All ID's (Soon!)");
             }
@@ -123,6 +114,28 @@ namespace SOTF_ModMenu
                         Cursor.visible = false;
                         Cursor.lockState = CursorLockMode.Locked;
                     }
+                }
+            }
+            
+            private void SpawnItemHotkeyPressed()
+            {
+                if (Input.GetKeyDown(Plugin.SpawnItemKeybind.Value))
+                {
+                    SpawnItem();
+                }
+            }
+            
+            private void SpawnItem()
+            {
+                try
+                {
+                    int itemID = int.Parse(TextFieldItemID);
+                    int amount = int.Parse(TextFieldAmount);
+                    LocalPlayer.Inventory.AddItem(itemID, amount);
+                }
+                catch
+                {
+                    Plugin.log.LogError("Failed to add item!");
                 }
             }
 
