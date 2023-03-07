@@ -57,8 +57,7 @@ namespace SOTF_ModMenu
 
             private void Update()
             {
-                ShowMenu();
-                SpawnItemHotkeyPressed();
+                RegisterHandlers();
 
                 if(vitals == null)
                 {
@@ -94,6 +93,12 @@ namespace SOTF_ModMenu
                 StructureCraftingSystem scs = LocalPlayer.StructureCraftingSystem;
                 scs.InstantBuild = Settings.InstantBuild;
 
+            }
+            
+            private void RegisterHandlers()
+            {
+                ShowMenu();
+                SpawnItemHotkeyPressed();
             }
             
             private void ShowMenu()
