@@ -18,10 +18,12 @@ namespace SOTF_ModMenu
             MODNAME = "SOTF_ModMenu",
             AUTHOR = "Nie",
             GUID = AUTHOR + "_" + MODNAME,
-            VERSION = "1.1.3";
+            VERSION = "1.1.4";
         
         public static ConfigFile ConfigFile = new (Path.Combine(Paths.ConfigPath, "SOTF_ModMenu.cfg"), true);
         public static ConfigEntry<KeyCode> ModMenuKeybind = ConfigFile.Bind("Hotkeys", "Toggle", KeyCode.BackQuote, "Enables or disables the Mod Menu");
+        public static ConfigEntry<KeyCode> SpawnItemKeybind = ConfigFile.Bind("Hotkeys", "SpawnItem", KeyCode.F8, "Spawns the currently stored item ID");
+
         public Plugin()
         {
             log = Log;
