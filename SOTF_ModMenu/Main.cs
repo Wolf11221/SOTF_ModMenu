@@ -47,10 +47,12 @@ namespace SOTF_ModMenu
                 if (GUI.Button(new Rect(12, 274, 146, 20), "Show All ID's"))
                     Settings.ShowItemIDs = !Settings.ShowItemIDs;
 
+                
+                GUI.backgroundColor=Color.grey;
                 //Show IDs Window
                 if (Settings.ShowItemIDs)
                 {
-                    windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)ShowAllIDsWindow, "Show IDs");
+                    windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)ShowAllIDsWindow, "Show ID's");
                 }
             }
 
