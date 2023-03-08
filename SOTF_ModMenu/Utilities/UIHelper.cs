@@ -40,7 +40,8 @@ namespace SOTF_ModMenu.Utilities
 
         public static bool Button(string text, bool state)
         {
-            return Button(MakeEnable(text, state));
+            bool newState  = Button(MakeEnable(text, state));
+            return newState != state;
         }
 
         public static bool Button(string text)

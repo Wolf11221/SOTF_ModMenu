@@ -1,3 +1,5 @@
+using Il2CppSystem.Collections.Generic;
+using Il2CppSystem.IO;
 using Sons.Crafting.Structures;
 using Sons.Input;
 using Sons.Items.Core;
@@ -12,44 +14,44 @@ namespace SOTF_ModMenu
     {
         public class MyMonoBehaviour : MonoBehaviour
         {
+            static List<ItemData> itemList;
+            static bool isInitialized = false;
+            private Vector2 scrollPosition = Vector2.zero;
+
             private void OnGUI()
             {
                 if(!Settings.Visible) return;
                 
-                //Vitals
-                UIHelper.Begin("Vitals", 10, 10, 150, 197, 2, 20, 2);
-                if (UIHelper.Button("Max Health: ", Settings.Health))
-                    Settings.Health = !Settings.Health;
-                if (UIHelper.Button("Max Stamina: ", Settings.Stamina))
-                    Settings.Stamina = !Settings.Stamina;
-                if (UIHelper.Button("Max Strength: ", Settings.Strength))
-                    Settings.Strength = !Settings.Strength;
-                if (UIHelper.Button("Max LungCapacity: ", Settings.LungCapacity))
-                    Settings.LungCapacity = !Settings.LungCapacity;
-                if (UIHelper.Button("No Cold: ", Settings.Cold))
-                    Settings.Cold = !Settings.Cold;
-                if (UIHelper.Button("No Hunger: ", Settings.Hunger))
-                    Settings.Hunger = !Settings.Hunger;
-                if (UIHelper.Button("No Thirst: ", Settings.Thirst))
-                    Settings.Thirst = !Settings.Thirst;
-                if (UIHelper.Button("Always Rested: ", Settings.Rested))
-                    Settings.Rested = !Settings.Rested;
+                //Player
+                UIHelper.Begin("Player", 10, 10, 150, 197, 2, 20, 2);
+                Settings.Health = UIHelper.Button("Max Health: ", Settings.Health);
+                Settings.Stamina = UIHelper.Button("Max Stamina: ", Settings.Stamina);
+                Settings.Strength = UIHelper.Button("Max Strength: ", Settings.Strength);
+                Settings.LungCapacity = UIHelper.Button("Max LungCapacity: ", Settings.LungCapacity);
+                Settings.Cold = UIHelper.Button("No Cold: ", Settings.Cold);
+                Settings.Hunger = UIHelper.Button("No Hunger: ", Settings.Hunger);
+                Settings.Thirst = UIHelper.Button("No Thirst: ", Settings.Thirst);
+                Settings.Rested = UIHelper.Button("Always Rested: ", Settings.Rested);
 
                 //World
                 UIHelper.Begin("World", 165, 10, 150, 100, 2, 20, 2);
-                if (UIHelper.Button("Instant Build: ", Settings.InstantBuild))
-                    Settings.InstantBuild = !Settings.InstantBuild;
-                
+                Settings.InstantBuild = UIHelper.Button("Instant Build: ", Settings.InstantBuild);  
+
                 //Item Spawner
                 UIHelper.Begin("Item Spawner", 10, 212, 150, 85, 2, 20, 2);
                 UIHelper.Label("Enter id & amount");
                 Settings.TextFieldItemID = GUI.TextField(new Rect(12, 252, 40, 20), Settings.TextFieldItemID);
                 Settings.TextFieldAmount = GUI.TextField(new Rect(55, 252, 30, 20), Settings.TextFieldAmount);
                 if (GUI.Button(new Rect(88, 252, 70, 20), "Spawn"))
-                {
                     SpawnItem();
+                if (GUI.Button(new Rect(12, 274, 146, 20), "Show All ID's"))
+                    Settings.ShowItemIDs = !Settings.ShowItemIDs;
+
+                //Show IDs Window
+                if (Settings.ShowItemIDs)
+                {
+                    windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)ShowAllIDsWindow, "Show IDs");
                 }
-                GUI.Button(new Rect(12, 274, 146, 20), "Show All ID's (Soon!)");
             }
 
             private void Update()
@@ -130,7 +132,6 @@ namespace SOTF_ModMenu
             }
             private void HideHUDHotkeyPressed()
             {
-                Settings.HideHUD = !Settings.HideHUD;
                 if (Input.GetKeyDown(Plugin.HideHUDKeybind.Value))
                 {
                     HideHUD();
@@ -153,6 +154,7 @@ namespace SOTF_ModMenu
 
             private void HideHUD()
             {
+                Settings.HideHUD = !Settings.HideHUD;
                 foreach (GameObject gObject in SceneManager.GetSceneByName("SonsMain").GetRootGameObjects())
                 {
                     if (gObject.name == "PlayerStandin")
@@ -163,6 +165,48 @@ namespace SOTF_ModMenu
                 }
             }
 
+            // Add search, categories
+            // Optimize this
+            private Rect windowRect = new Rect(10, 305, 300, 500); // 20, 25
+            public void ShowAllIDsWindow (int windowID)
+            {
+                sonsMainScene = SceneManager.GetSceneByName("SonsMain");
+                if (sonsMainScene.isLoaded)
+                {
+                    if (!isInitialized)
+                    {
+                        itemList ??= ItemDatabaseManager.Items;
+                        isInitialized = true;
+                    }
+                }
+
+                if (itemList == null || itemList.Count == 0)
+                {
+                    GUI.Label(new Rect(5, 15, 300, 500), "Item list is empty.");
+                }
+                else
+                {
+                    var writer = new StringWriter();
+                    foreach (ItemData item in itemList)
+                    {
+                        writer.Write(item._name);
+                        writer.Write(" : ");
+                        writer.WriteLine(item._id);
+                    }
+
+                    GUILayout.BeginArea(new Rect(5, 15, 295, 480));
+                    scrollPosition = GUILayout.BeginScrollView(scrollPosition);
+                    GUILayout.BeginVertical();
+                    GUILayout.Label(writer.ToString());
+                    GUILayout.EndVertical();
+                    GUILayout.EndScrollView();
+                    GUILayout.EndArea();
+                }
+                
+                GUI.DragWindow(new Rect(0, 0, 10000, 20));
+            }
+
+            private Scene sonsMainScene;
             private Vitals vitals;
         }
     }
