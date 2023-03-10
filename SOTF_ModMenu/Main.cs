@@ -22,9 +22,15 @@ namespace SOTF_ModMenu
 
             private void OnGUI()
             {
-                
                 //ESP Draw, placed before check for cheat visible to prevent the ESP from not rendering when GUI not visible
-                ESP.Enabled();
+                if (Settings.EspEnable)
+                    ESP.Enabled();
+                else
+                {
+                    Settings.EspAnimalsEnable = false;
+                    Settings.EspEnemyEnable = false;
+                    Settings.EspFriendlyEnable = false;
+                }
                 
                 if(!Settings.Visible) return;
                 

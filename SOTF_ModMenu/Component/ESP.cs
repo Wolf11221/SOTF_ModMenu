@@ -9,14 +9,6 @@ internal static class ESP
 {
     public static void Enabled()
     {
-        if (!Settings.EspEnable)
-        {
-            Settings.EspAnimalsEnable = false;
-            Settings.EspEnemyEnable = false;
-            Settings.EspFriendlyEnable = false;
-            return;
-        }
-            
         //try and get actors from VailActorManager
         Il2CppSystem.Collections.Generic.List<VailActor> actors;
         try
