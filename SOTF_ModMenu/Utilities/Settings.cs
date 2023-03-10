@@ -17,6 +17,12 @@
         
         public static bool InstantBuild = false;
         
+        //ESP Settings
+        public static bool EspEnable = true;
+        public static bool EspAnimalsEnable = false;
+        public static bool EspEnemyEnable = false;
+        public static bool EspFriendlyEnable = false;
+        
         public static string TextFieldItemID = "392";
         public static string TextFieldAmount = "1";
     }

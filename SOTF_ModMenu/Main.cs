@@ -3,6 +3,7 @@ using Il2CppSystem.IO;
 using Sons.Crafting.Structures;
 using Sons.Input;
 using Sons.Items.Core;
+using SOTF_ModMenu.Component;
 using UnityEngine;
 using TheForest.Utils;
 using SOTF_ModMenu.Utilities;
@@ -17,9 +18,20 @@ namespace SOTF_ModMenu
             static List<ItemData> itemList;
             static bool isInitialized = false;
             private Vector2 scrollPosition = Vector2.zero;
+            public static Camera _cameraMain;
 
             private void OnGUI()
             {
+                //ESP Draw, placed before check for cheat visible to prevent the ESP from not rendering when GUI not visible
+                if (Settings.EspEnable)
+                    ESP.Enabled();
+                else
+                {
+                    Settings.EspAnimalsEnable = false;
+                    Settings.EspEnemyEnable = false;
+                    Settings.EspFriendlyEnable = false;
+                }
+                
                 if(!Settings.Visible) return;
                 
                 //Player
@@ -36,6 +48,13 @@ namespace SOTF_ModMenu
                 //World
                 UIHelper.Begin("World", 165, 10, 150, 100, 2, 20, 2);
                 Settings.InstantBuild = UIHelper.Button("Instant Build: ", Settings.InstantBuild);  
+                
+                //ESP
+                UIHelper.Begin("ESP", 320, 10, 150, 100, 2, 20, 2);
+                Settings.EspEnable = UIHelper.Button("ESP Enabled: ", Settings.EspEnable);
+                Settings.EspAnimalsEnable = UIHelper.Button("ESP Animals: ", Settings.EspAnimalsEnable);
+                Settings.EspEnemyEnable = UIHelper.Button("ESP Enemies: ", Settings.EspEnemyEnable);
+                Settings.EspFriendlyEnable = UIHelper.Button("ESP Friendly: ", Settings.EspFriendlyEnable);
 
                 //Item Spawner
                 UIHelper.Begin("Item Spawner", 10, 212, 150, 85, 2, 20, 2);
@@ -59,6 +78,9 @@ namespace SOTF_ModMenu
             private void Update()
             {
                 RegisterHandlers();
+                
+                //continue getting player camera object to use for position in world
+                _cameraMain = Camera.main ?? null;
 
                 if(vitals == null)
                 {
