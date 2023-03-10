@@ -80,7 +80,7 @@ namespace SOTF_ModMenu.Utilities
             StringStyle.normal.textColor = color;
             var guicontent = new GUIContent(label);
             var vector = StringStyle.CalcSize(guicontent);
-            GUI.Label(new Rect(centered ? (position - vector) / 2f : position, vector), guicontent, StringStyle);
+            GUI.Label(new Rect(centered ? position - vector / 2f : position, vector), guicontent, StringStyle);
             return true;
         }
         public static void DrawLine(Vector2 start, Vector2 end, Color color, float width)

@@ -9,7 +9,7 @@ internal static class ESP
 {
     public static void Enabled()
     {
-        //try and get actors from VailActorManager
+        //get actors from VailActorManager
         Il2CppSystem.Collections.Generic.List<VailActor> actors;
         try
         {
