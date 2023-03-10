@@ -47,7 +47,7 @@ namespace SOTF_ModMenu
                 UIHelper.Begin("ESP", 320, 10, 150, 100, 2, 20, 2);
                 Settings.EspEnable = UIHelper.Button("ESP Enabled: ", Settings.EspEnable);
                 Settings.EspAnimalsEnable = UIHelper.Button("ESP Animals: ", Settings.EspAnimalsEnable);
-                Settings.EspEnemyEnable = UIHelper.Button("ESP Enemy's: ", Settings.EspEnemyEnable);
+                Settings.EspEnemyEnable = UIHelper.Button("ESP Enemies: ", Settings.EspEnemyEnable);
                 Settings.EspFriendlyEnable = UIHelper.Button("ESP Friendly: ", Settings.EspFriendlyEnable);
 
                 //Item Spawner
