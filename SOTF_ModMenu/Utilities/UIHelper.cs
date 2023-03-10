@@ -5,6 +5,7 @@ namespace SOTF_ModMenu.Utilities
 {
     public static class UIHelper
     {
+        public static GUIStyle StringStyle { get; set; } = new(GUI.skin.label);
         private static float
             x, y,
             width, height,
@@ -62,6 +63,54 @@ namespace SOTF_ModMenu.Utilities
         public static float Slider(float val, float min, float max)
         {
             return GUI.HorizontalSlider(NextControlRect(), val, min, max);
+        }
+        /// <summary>
+        /// Draw string on screen
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="label"></param>
+        /// <param name="color"></param>
+        /// <param name="fontSize"></param>
+        /// <param name="centered"></param>
+        /// <returns>returns true given no errors occured</returns>
+        public static bool DrawString(Vector2 position, string label, Color color, int fontSize, bool centered = true)
+        {
+            GUI.color = color;
+            StringStyle.fontSize = fontSize;
+            StringStyle.normal.textColor = color;
+            var guicontent = new GUIContent(label);
+            var vector = StringStyle.CalcSize(guicontent);
+            GUI.Label(new Rect(centered ? position - vector / 2f : position, vector), guicontent, StringStyle);
+            return true;
+        }
+        public static void DrawLine(Vector2 start, Vector2 end, Color color, float width)
+        {
+            GUI.depth = 0;
+            var num = (float)57.29577951308232;
+            var vector = end - start;
+            var num2 = num * Mathf.Atan(vector.y / vector.x);
+            if (vector.x < 0f) num2 += 180f;
+            var num3 = (int)Mathf.Ceil(width / 2f);
+            GUIUtility.RotateAroundPivot(num2, start);
+            GUI.color = color;
+            GUI.DrawTexture(new Rect(start.x, start.y - num3, vector.magnitude, width), Texture2D.whiteTexture,
+                ScaleMode.StretchToFill);
+            GUIUtility.RotateAroundPivot(-num2, start);
+        }
+
+        public static void DrawBox(Vector2 position, Vector2 size, Color color, bool centered = true)
+        {
+            if (centered) position -= size / 2f;
+            GUI.color = color;
+            GUI.DrawTexture(new Rect(position, size), Texture2D.whiteTexture, ScaleMode.StretchToFill);
+        }
+
+        public static void DrawBoxOutline(Vector2 Point, float width, float height, Color color)
+        {
+            DrawLine(Point, new Vector2(Point.x + width, Point.y), color, 2f);
+            DrawLine(Point, new Vector2(Point.x, Point.y + height), color, 2f);
+            DrawLine(new Vector2(Point.x + width, Point.y + height), new Vector2(Point.x + width, Point.y), color, 2f);
+            DrawLine(new Vector2(Point.x + width, Point.y + height), new Vector2(Point.x, Point.y + height), color, 2f);
         }
     }
 }
