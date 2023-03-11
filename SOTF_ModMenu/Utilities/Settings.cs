@@ -23,6 +23,15 @@
         public static bool EspEnemyEnable = false;
         public static bool EspFriendlyEnable = false;
         
+        //InfLog Settings
+        public static bool InfLogs = false;
+        
+        //InfAmmo
+        public static bool InfAmmo = false;
+        
+        //SpeedyRun
+        public static bool SpeedyRun = false;
+        
         public static string TextFieldItemID = "392";
         public static string TextFieldAmount = "1";
     }

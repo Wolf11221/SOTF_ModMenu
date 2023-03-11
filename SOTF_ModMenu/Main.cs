@@ -1,6 +1,5 @@
 using Il2CppSystem.Collections.Generic;
 using Il2CppSystem.IO;
-using Sons.Crafting.Structures;
 using Sons.Input;
 using Sons.Items.Core;
 using SOTF_ModMenu.Component;
@@ -22,15 +21,7 @@ namespace SOTF_ModMenu
 
             private void OnGUI()
             {
-                //ESP Draw, placed before check for cheat visible to prevent the ESP from not rendering when GUI not visible
-                if (Settings.EspEnable)
-                    ESP.Enabled();
-                else
-                {
-                    Settings.EspAnimalsEnable = false;
-                    Settings.EspEnemyEnable = false;
-                    Settings.EspFriendlyEnable = false;
-                }
+                
                 
                 if(!Settings.Visible) return;
                 GUI.color = Color.white;
@@ -56,6 +47,13 @@ namespace SOTF_ModMenu
                 Settings.EspAnimalsEnable = UIHelper.Button("ESP Animals: ", Settings.EspAnimalsEnable);
                 Settings.EspEnemyEnable = UIHelper.Button("ESP Enemies: ", Settings.EspEnemyEnable);
                 Settings.EspFriendlyEnable = UIHelper.Button("ESP Friendly: ", Settings.EspFriendlyEnable);
+                
+                //Player
+                UIHelper.Begin("Other", 475, 10, 165, 100, 2, 20, 2);
+                Settings.InfLogs = UIHelper.Button("InfLogs Enabled: ", Settings.InfLogs);
+                //Settings.InfAmmo = UIHelper.Button("InfAmmo Enabled: ", Settings.InfAmmo);
+                Settings.SpeedyRun = UIHelper.Button("SpeedRun Enabled: ", Settings.SpeedyRun);
+                //Settings.FreeCam = UIHelper.Button("FreeCam Enabled: ", Settings.FreeCam);
 
                 //Item Spawner
                 UIHelper.Begin("Item Spawner", 10, 212, 150, 85, 2, 20, 2);
@@ -80,12 +78,35 @@ namespace SOTF_ModMenu
                 //continue getting player camera object to use for position in world
                 _cameraMain = Camera.main ?? null;
                 
+                //player in world
+                if (!LocalPlayer.IsInWorld) return;
+
+                //ESP Draw, placed before check for cheat visible to prevent the ESP from not rendering when GUI not visible
+                if (Settings.EspEnable)
+                    ESP.Enabled();
+                else
+                {
+                    Settings.EspAnimalsEnable = false;
+                    Settings.EspEnemyEnable = false;
+                    Settings.EspFriendlyEnable = false;
+                }
+
+                //InfLogs
+                if(Settings.InfLogs) CPlayer.InfLogs();
+
+                //InfAmmo
+                CPlayer.InfAmmo();
+                
+                //SpeedyRun
+                CPlayer.SpeedyRun();
+                
+                //InfAmmo
+                CPlayer.InfAmmo();
+
+                //Vitals
                 if(vitals == null)
                     vitals = LocalPlayer.Vitals;
-
-                if (!LocalPlayer.IsInWorld) return;
                 
-                //Vitals
                 if (Settings.Health) {
                     vitals._health._currentValue = vitals._health._max;
                     LocalPlayer.FpCharacter.allowFallDamage = false;
@@ -123,7 +144,6 @@ namespace SOTF_ModMenu
             {
                 if (Input.GetKeyDown(Plugin.ModMenuKeybind.Value))
                 {
-                    
                     Settings.Visible = !Settings.Visible;
                     if(Settings.Visible)
                     {
