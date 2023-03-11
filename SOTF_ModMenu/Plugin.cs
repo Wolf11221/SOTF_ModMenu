@@ -18,7 +18,7 @@ namespace SOTF_ModMenu
             MODNAME = "SOTF_ModMenu",
             AUTHOR = "Nie",
             GUID = AUTHOR + "_" + MODNAME,
-            VERSION = "1.2.0";
+            VERSION = "1.3.0";
         
         public static ConfigFile ConfigFile = new (Path.Combine(Paths.ConfigPath, "SOTF_ModMenu.cfg"), true);
         public static ConfigEntry<KeyCode> ModMenuKeybind = ConfigFile.Bind("Hotkeys", "Toggle", KeyCode.BackQuote, "Enables or disables the Mod Menu");

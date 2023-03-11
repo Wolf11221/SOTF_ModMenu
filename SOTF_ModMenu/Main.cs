@@ -33,6 +33,7 @@ namespace SOTF_ModMenu
                 }
                 
                 if(!Settings.Visible) return;
+                GUI.color = Color.white;
                 
                 //Player
                 UIHelper.Begin("Player", 10, 10, 150, 197, 2, 20, 2);
@@ -65,7 +66,6 @@ namespace SOTF_ModMenu
                     SpawnItem();
                 if (GUI.Button(new Rect(12, 274, 146, 20), "Show All ID's"))
                     Settings.ShowItemIDs = !Settings.ShowItemIDs;
-
                 
                 GUI.backgroundColor=Color.grey;
                 //Show IDs Window
@@ -115,7 +115,6 @@ namespace SOTF_ModMenu
                 //World
                 StructureCraftingSystem scs = LocalPlayer.StructureCraftingSystem;
                 scs.InstantBuild = Settings.InstantBuild;
-
             }
             
             private void RegisterHandlers()
