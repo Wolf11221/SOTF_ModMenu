@@ -70,9 +70,7 @@ namespace SOTF_ModMenu
                 GUI.backgroundColor=Color.grey;
                 //Show IDs Window
                 if (Settings.ShowItemIDs)
-                {
                     windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)ShowAllIDsWindow, "Show ID's");
-                }
             }
 
             private void Update()
@@ -81,11 +79,9 @@ namespace SOTF_ModMenu
                 
                 //continue getting player camera object to use for position in world
                 _cameraMain = Camera.main ?? null;
-
+                
                 if(vitals == null)
-                {
-                    vitals = FindObjectOfType<Vitals>();
-                }
+                    vitals = LocalPlayer.Vitals;
 
                 if (!LocalPlayer.IsInWorld) return;
                 
@@ -111,10 +107,9 @@ namespace SOTF_ModMenu
                     vitals._strength._currentValue = vitals._strength._max;
                 if (Settings.LungCapacity)
                     vitals.LungBreathing.CurrentLungAir = vitals.LungBreathing.MaxLungAirCapacity;
-
+                
                 //World
-                StructureCraftingSystem scs = LocalPlayer.StructureCraftingSystem;
-                scs.InstantBuild = Settings.InstantBuild;
+                LocalPlayer.StructureCraftingSystem.InstantBuild = Settings.InstantBuild;
             }
             
             private void RegisterHandlers()
