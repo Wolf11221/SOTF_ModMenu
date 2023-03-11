@@ -7,7 +7,7 @@ Requires [BepInEx](https://thunderstore.io/c/sons-of-the-forest/p/BepInEx/BepInE
 
 Recommended to allow keybind swaps ingame [BepInEx ConfigurationManager](https://thunderstore.io/c/sons-of-the-forest/p/faulty/BepInEx_ConfigurationManager/)
 
-![SOTF ModMenu](https://i.imgur.com/ZLBOGkB.jpg)
+![SOTF ModMenu](https://i.imgur.com/xF6IRwA.jpg)
 
 ## Features:
 
@@ -21,6 +21,7 @@ Recommended to allow keybind swaps ingame [BepInEx ConfigurationManager](https:/
 * Always Rested
 * Instant Build
 * Item Spawner
+* ESP
 
 And more to come!
 
