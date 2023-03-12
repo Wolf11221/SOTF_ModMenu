@@ -36,7 +36,7 @@ namespace SOTF_ModMenu
                 GUI.color = Color.white;
                 
                 //Player
-                UIHelper.Begin("Player", 10, 10, 150, 197, 2, 20, 2);
+                UIHelper.Begin("Player", 10, 10, 165, 237, 2, 20, 2);
                 Settings.Health = UIHelper.Button("Max Health: ", Settings.Health);
                 Settings.Stamina = UIHelper.Button("Max Stamina: ", Settings.Stamina);
                 Settings.Strength = UIHelper.Button("Max Strength: ", Settings.Strength);
@@ -45,34 +45,35 @@ namespace SOTF_ModMenu
                 Settings.Hunger = UIHelper.Button("No Hunger: ", Settings.Hunger);
                 Settings.Thirst = UIHelper.Button("No Thirst: ", Settings.Thirst);
                 Settings.Rested = UIHelper.Button("Always Rested: ", Settings.Rested);
+                Settings.InfAmmo = UIHelper.Button("Infinite Ammo: ", Settings.InfAmmo);
+                Settings.SpeedyRun = UIHelper.Button("SpeedRun: ", Settings.SpeedyRun);
 
                 //World
-                UIHelper.Begin("World", 165, 10, 150, 100, 2, 20, 2);
+                UIHelper.Begin("World", 180, 10, 165, 100, 2, 20, 2);
                 Settings.InstantBuild = UIHelper.Button("Instant Build: ", Settings.InstantBuild);  
                 Settings.InfBuild = UIHelper.Button("Infinite Build: ", Settings.InfBuild);  
+                Settings.CaveLight = UIHelper.Button("Cave Light: ", Settings.CaveLight);  
                 
                 //ESP
-                UIHelper.Begin("ESP", 320, 10, 150, 100, 2, 20, 2);
+                UIHelper.Begin("ESP", 350, 10, 165, 108, 2, 20, 2);
                 Settings.EspEnable = UIHelper.Button("ESP Enabled: ", Settings.EspEnable);
                 Settings.EspAnimalsEnable = UIHelper.Button("ESP Animals: ", Settings.EspAnimalsEnable);
                 Settings.EspEnemyEnable = UIHelper.Button("ESP Enemies: ", Settings.EspEnemyEnable);
                 Settings.EspFriendlyEnable = UIHelper.Button("ESP Friendly: ", Settings.EspFriendlyEnable);
                 
-                //Player
-                UIHelper.Begin("Other", 475, 10, 165, 100, 2, 20, 2);
-                Settings.InfLogs = UIHelper.Button("InfLogs Enabled: ", Settings.InfLogs);
-                Settings.InfAmmo = UIHelper.Button("InfAmmo Enabled: ", Settings.InfAmmo);
-                Settings.SpeedyRun = UIHelper.Button("SpeedRun Enabled: ", Settings.SpeedyRun);
+                //Other
+                UIHelper.Begin("Other", 520, 10, 165, 100, 2, 20, 2);
+                Settings.InfLogs = UIHelper.Button("Infinite Logs: ", Settings.InfLogs);
                 //Settings.FreeCam = UIHelper.Button("FreeCam Enabled: ", Settings.FreeCam);
 
                 //Item Spawner
-                UIHelper.Begin("Item Spawner", 10, 212, 150, 85, 2, 20, 2);
+                UIHelper.Begin("Item Spawner", 10, 252, 165, 84, 2, 20, 2);
                 UIHelper.Label("Enter id & amount");
-                Settings.TextFieldItemID = GUI.TextField(new Rect(12, 252, 40, 20), Settings.TextFieldItemID);
-                Settings.TextFieldAmount = GUI.TextField(new Rect(55, 252, 30, 20), Settings.TextFieldAmount);
-                if (GUI.Button(new Rect(88, 252, 70, 20), "Spawn"))
+                Settings.TextFieldItemID = GUI.TextField(new Rect(12, 292, 40, 20), Settings.TextFieldItemID);
+                Settings.TextFieldAmount = GUI.TextField(new Rect(55, 292, 30, 20), Settings.TextFieldAmount);
+                if (GUI.Button(new Rect(88, 292, 85, 20), "Spawn"))
                     SpawnItem();
-                if (GUI.Button(new Rect(12, 274, 146, 20), "Show All ID's"))
+                if (GUI.Button(new Rect(12, 314, 161, 20), "Show All ID's"))
                     Settings.ShowItemIDs = !Settings.ShowItemIDs;
                 
                 GUI.backgroundColor=Color.grey;
@@ -90,7 +91,7 @@ namespace SOTF_ModMenu
                 
                 //player in world
                 if (!LocalPlayer.IsInWorld) return;
-                
+
                 //InfLogs
                 if(Settings.InfLogs) CPlayer.InfLogs();
 
@@ -99,6 +100,9 @@ namespace SOTF_ModMenu
                 
                 //SpeedyRun
                 CPlayer.SpeedyRun();
+                
+                //if(Settings.CaveLight)
+                CPlayer.CaveLight(Settings.CaveLight);
 
                 //Vitals
                 if(vitals == null)
@@ -204,7 +208,7 @@ namespace SOTF_ModMenu
 
             // Add search, categories
             // Optimize this
-            private Rect windowRect = new Rect(10, 305, 300, 500); // 20, 25
+            private Rect windowRect = new Rect(10, 345, 300, 500);
             public void ShowAllIDsWindow (int windowID)
             {
                 sonsMainScene = SceneManager.GetSceneByName("SonsMain");

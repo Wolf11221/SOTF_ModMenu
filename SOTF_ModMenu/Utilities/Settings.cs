@@ -33,6 +33,9 @@
         //SpeedyRun
         public static bool SpeedyRun = false;
         
+        //CaveLight
+        public static bool CaveLight = false;
+        
         public static string TextFieldItemID = "392";
         public static string TextFieldAmount = "1";
     }

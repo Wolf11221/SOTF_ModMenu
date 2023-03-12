@@ -1,13 +1,18 @@
 using Sons.Inventory;
-using Sons.Items.Core;
 using SOTF_ModMenu.Utilities;
 using TheForest;
 using TheForest.Utils;
+using UnityEngine;
+using UnityEngine.Rendering.HighDefinition;
+using Types = Sons.Items.Core.Types;
 
 namespace SOTF_ModMenu.Component;
 
 internal static class CPlayer
 {
+    private static GameObject _lightGameObject;
+    private static bool _spawned;
+    
     /// <summary>
     ///     Enable/Disable Infinite Logs
     /// </summary>
@@ -36,5 +41,31 @@ internal static class CPlayer
     public static void SpeedyRun()
     {
         DebugConsole.Instance._speedyrun(Settings.SpeedyRun ? "on" : "off");
+    }
+    
+    public static void CaveLight(bool enableLight)
+    {
+        if (LocalPlayer.IsInWorld)
+        {
+            if (enableLight && !_spawned)
+            {
+                _spawned = true;
+                var localPlayer = GameObject.Find("LocalPlayer");
+                _lightGameObject = new GameObject("Light");
+                _lightGameObject.transform.SetParent(localPlayer.transform);
+                _lightGameObject.transform.position = localPlayer.transform.position + Vector3.up * 3f;
+
+                Light lightComponent = _lightGameObject.AddComponent<Light>();
+                lightComponent.intensity = 500000f;
+
+                HDAdditionalLightData additionalLightData = _lightGameObject.AddComponent<HDAdditionalLightData>();
+                additionalLightData.affectsVolumetric = false;
+            }
+            else if (!enableLight && _lightGameObject != null)
+            {
+                _spawned = false;
+                Object.Destroy(_lightGameObject);
+            }
+        }
     }
 }
