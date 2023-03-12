@@ -16,12 +16,22 @@
         public static bool LungCapacity = false;
         
         public static bool InstantBuild = false;
+        public static bool InfBuild = false;
         
         //ESP Settings
         public static bool EspEnable = true;
         public static bool EspAnimalsEnable = false;
         public static bool EspEnemyEnable = false;
         public static bool EspFriendlyEnable = false;
+        
+        //InfLog Settings
+        public static bool InfLogs = false;
+        
+        //InfAmmo
+        public static bool InfAmmo = false;
+        
+        //SpeedyRun
+        public static bool SpeedyRun = false;
         
         public static string TextFieldItemID = "392";
         public static string TextFieldAmount = "1";

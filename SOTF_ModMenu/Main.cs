@@ -1,6 +1,5 @@
 using Il2CppSystem.Collections.Generic;
 using Il2CppSystem.IO;
-using Sons.Crafting.Structures;
 using Sons.Input;
 using Sons.Items.Core;
 using SOTF_ModMenu.Component;
@@ -22,6 +21,7 @@ namespace SOTF_ModMenu
 
             private void OnGUI()
             {
+                
                 //ESP Draw, placed before check for cheat visible to prevent the ESP from not rendering when GUI not visible
                 if (Settings.EspEnable)
                     ESP.Enabled();
@@ -49,6 +49,7 @@ namespace SOTF_ModMenu
                 //World
                 UIHelper.Begin("World", 165, 10, 150, 100, 2, 20, 2);
                 Settings.InstantBuild = UIHelper.Button("Instant Build: ", Settings.InstantBuild);  
+                Settings.InfBuild = UIHelper.Button("Infinite Build: ", Settings.InfBuild);  
                 
                 //ESP
                 UIHelper.Begin("ESP", 320, 10, 150, 100, 2, 20, 2);
@@ -56,6 +57,13 @@ namespace SOTF_ModMenu
                 Settings.EspAnimalsEnable = UIHelper.Button("ESP Animals: ", Settings.EspAnimalsEnable);
                 Settings.EspEnemyEnable = UIHelper.Button("ESP Enemies: ", Settings.EspEnemyEnable);
                 Settings.EspFriendlyEnable = UIHelper.Button("ESP Friendly: ", Settings.EspFriendlyEnable);
+                
+                //Player
+                UIHelper.Begin("Other", 475, 10, 165, 100, 2, 20, 2);
+                Settings.InfLogs = UIHelper.Button("InfLogs Enabled: ", Settings.InfLogs);
+                Settings.InfAmmo = UIHelper.Button("InfAmmo Enabled: ", Settings.InfAmmo);
+                Settings.SpeedyRun = UIHelper.Button("SpeedRun Enabled: ", Settings.SpeedyRun);
+                //Settings.FreeCam = UIHelper.Button("FreeCam Enabled: ", Settings.FreeCam);
 
                 //Item Spawner
                 UIHelper.Begin("Item Spawner", 10, 212, 150, 85, 2, 20, 2);
@@ -70,9 +78,7 @@ namespace SOTF_ModMenu
                 GUI.backgroundColor=Color.grey;
                 //Show IDs Window
                 if (Settings.ShowItemIDs)
-                {
                     windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)ShowAllIDsWindow, "Show ID's");
-                }
             }
 
             private void Update()
@@ -81,15 +87,23 @@ namespace SOTF_ModMenu
                 
                 //continue getting player camera object to use for position in world
                 _cameraMain = Camera.main ?? null;
-
-                if(vitals == null)
-                {
-                    vitals = FindObjectOfType<Vitals>();
-                }
-
+                
+                //player in world
                 if (!LocalPlayer.IsInWorld) return;
                 
+                //InfLogs
+                if(Settings.InfLogs) CPlayer.InfLogs();
+
+                //InfAmmo
+                if(Settings.InfAmmo) CPlayer.InfAmmo();
+                
+                //SpeedyRun
+                CPlayer.SpeedyRun();
+
                 //Vitals
+                if(vitals == null)
+                    vitals = LocalPlayer.Vitals;
+                
                 if (Settings.Health) {
                     vitals._health._currentValue = vitals._health._max;
                     LocalPlayer.FpCharacter.allowFallDamage = false;
@@ -111,10 +125,11 @@ namespace SOTF_ModMenu
                     vitals._strength._currentValue = vitals._strength._max;
                 if (Settings.LungCapacity)
                     vitals.LungBreathing.CurrentLungAir = vitals.LungBreathing.MaxLungAirCapacity;
-
+                
                 //World
-                StructureCraftingSystem scs = LocalPlayer.StructureCraftingSystem;
-                scs.InstantBuild = Settings.InstantBuild;
+                LocalPlayer.StructureCraftingSystem.InstantBuild = Settings.InstantBuild;
+                //replenishes items being placed in world. ie. logs, sticks. anything placed with building mechanic
+                LocalPlayer.Inventory.HeldOnlyItemController.InfiniteHack = Settings.InfBuild;
             }
             
             private void RegisterHandlers()
@@ -128,7 +143,6 @@ namespace SOTF_ModMenu
             {
                 if (Input.GetKeyDown(Plugin.ModMenuKeybind.Value))
                 {
-                    
                     Settings.Visible = !Settings.Visible;
                     if(Settings.Visible)
                     {
