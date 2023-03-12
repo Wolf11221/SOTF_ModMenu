@@ -22,6 +22,15 @@ namespace SOTF_ModMenu
             private void OnGUI()
             {
                 
+                //ESP Draw, placed before check for cheat visible to prevent the ESP from not rendering when GUI not visible
+                if (Settings.EspEnable)
+                    ESP.Enabled();
+                else
+                {
+                    Settings.EspAnimalsEnable = false;
+                    Settings.EspEnemyEnable = false;
+                    Settings.EspFriendlyEnable = false;
+                }
                 
                 if(!Settings.Visible) return;
                 GUI.color = Color.white;
@@ -40,6 +49,7 @@ namespace SOTF_ModMenu
                 //World
                 UIHelper.Begin("World", 165, 10, 150, 100, 2, 20, 2);
                 Settings.InstantBuild = UIHelper.Button("Instant Build: ", Settings.InstantBuild);  
+                Settings.InfBuild = UIHelper.Button("Infinite Build: ", Settings.InfBuild);  
                 
                 //ESP
                 UIHelper.Begin("ESP", 320, 10, 150, 100, 2, 20, 2);
@@ -51,7 +61,7 @@ namespace SOTF_ModMenu
                 //Player
                 UIHelper.Begin("Other", 475, 10, 165, 100, 2, 20, 2);
                 Settings.InfLogs = UIHelper.Button("InfLogs Enabled: ", Settings.InfLogs);
-                //Settings.InfAmmo = UIHelper.Button("InfAmmo Enabled: ", Settings.InfAmmo);
+                Settings.InfAmmo = UIHelper.Button("InfAmmo Enabled: ", Settings.InfAmmo);
                 Settings.SpeedyRun = UIHelper.Button("SpeedRun Enabled: ", Settings.SpeedyRun);
                 //Settings.FreeCam = UIHelper.Button("FreeCam Enabled: ", Settings.FreeCam);
 
@@ -80,28 +90,15 @@ namespace SOTF_ModMenu
                 
                 //player in world
                 if (!LocalPlayer.IsInWorld) return;
-
-                //ESP Draw, placed before check for cheat visible to prevent the ESP from not rendering when GUI not visible
-                if (Settings.EspEnable)
-                    ESP.Enabled();
-                else
-                {
-                    Settings.EspAnimalsEnable = false;
-                    Settings.EspEnemyEnable = false;
-                    Settings.EspFriendlyEnable = false;
-                }
-
+                
                 //InfLogs
                 if(Settings.InfLogs) CPlayer.InfLogs();
 
                 //InfAmmo
-                CPlayer.InfAmmo();
+                if(Settings.InfAmmo) CPlayer.InfAmmo();
                 
                 //SpeedyRun
                 CPlayer.SpeedyRun();
-                
-                //InfAmmo
-                CPlayer.InfAmmo();
 
                 //Vitals
                 if(vitals == null)
@@ -131,6 +128,8 @@ namespace SOTF_ModMenu
                 
                 //World
                 LocalPlayer.StructureCraftingSystem.InstantBuild = Settings.InstantBuild;
+                //replenishes items being placed in world. ie. logs, sticks. anything placed with building mechanic
+                LocalPlayer.Inventory.HeldOnlyItemController.InfiniteHack = Settings.InfBuild;
             }
             
             private void RegisterHandlers()

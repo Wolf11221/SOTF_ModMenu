@@ -1,3 +1,5 @@
+using Sons.Inventory;
+using Sons.Items.Core;
 using SOTF_ModMenu.Utilities;
 using TheForest;
 using TheForest.Utils;
@@ -11,8 +13,9 @@ internal static class CPlayer
     /// </summary>
     public static void InfLogs()
     {
-        if (LocalPlayer.Inventory.Logs.HasLogs && LocalPlayer.Inventory.Logs.Amount < 2)
-            LocalPlayer.Inventory.Logs._heldItemController._heldCount = 2;
+        if(LocalPlayer.IsInWorld)
+            if (LocalPlayer.Inventory.Logs.HasLogs && LocalPlayer.Inventory.Logs.Amount < 2)
+                LocalPlayer.Inventory.Logs._heldItemController._heldCount = 2;
         //can also use this but the way above is faster
         //DebugConsole.Instance._loghack(Settings.InfLogs ? "on" : "off");
     }
@@ -22,18 +25,12 @@ internal static class CPlayer
     /// </summary>
     public static void InfAmmo()
     {
-        //Plugin.log.LogInfo("InfAmmo");
-        //Cheats.Bridge.SetInfiniteAmmo(Settings.InfAmmo);
-        //DebugConsole.GetInstance()._showVailRadar = VailRadarType.Verbose;
-        //DebugConsole.GetInstance().ShowVailActorOverlay(VailOverlayType.Stats, "");
-        //DebugConsole.Instance._loghack("on");
-        //DebugConsole.Instance._ammohack(Settings.InfAmmo ? "on" : "off");
-
-        //var t = Object.FindObjectOfType<FreeCamera>();
-        //t.enabled = true;
-        //t.
-        //DebugConsole.Instance._freecamera(Settings.InfAmmo ? "on" : "off");
-        //DebugConsole.GetInstance()._ammohack("on");
+        //if holding item, try to get RangedWeaponItemInstanceModule and set ammo to max
+        if (!LocalPlayer.Inventory.IsRightHandEmpty() && !LocalPlayer.Inventory.Logs.HasLogs)
+            if(LocalPlayer.Inventory.RightHandItem.Data._type.HasFlag(Types.RangedWeapon))
+                if (LocalPlayer.Inventory.RightHandItem.TryGetModule(out RangedWeaponItemInstanceModule module))
+                    if (module._rangedWeapon._ammo._currentCount < module._rangedWeapon._ammo._maxCount)
+                        module._rangedWeapon._ammo._currentCount = module._rangedWeapon._ammo._maxCount;
     }
 
     public static void SpeedyRun()

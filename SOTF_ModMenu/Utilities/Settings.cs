@@ -16,6 +16,7 @@
         public static bool LungCapacity = false;
         
         public static bool InstantBuild = false;
+        public static bool InfBuild = false;
         
         //ESP Settings
         public static bool EspEnable = true;
