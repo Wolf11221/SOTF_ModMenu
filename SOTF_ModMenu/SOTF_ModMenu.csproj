@@ -31,11 +31,17 @@
     <Reference Include="Il2Cppmscorlib">
       <HintPath>Libs\Il2Cppmscorlib.dll</HintPath>
     </Reference>
+    <Reference Include="Il2CppSystem.Core">
+      <HintPath>Libs\Il2CppSystem.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Sons">
       <HintPath>Libs\Sons.dll</HintPath>
     </Reference>
     <Reference Include="Sons.Ai.Vail">
       <HintPath>Libs\Sons.Ai.Vail.dll</HintPath>
+    </Reference>
+    <Reference Include="Sons.Construction">
+      <HintPath>Libs\Sons.Construction.dll</HintPath>
     </Reference>
     <Reference Include="Sons.Input">
       <HintPath>Libs\Sons.Input.dll</HintPath>

@@ -1,6 +1,9 @@
 ﻿using System;
-using SOTF_ModMenu.Utilities;
+using System.Linq;
+using Construction;
+using Il2CppSystem.Collections.Generic;
 using Sons.Ai.Vail;
+using SOTF_ModMenu.Utilities;
 using UnityEngine;
 
 namespace SOTF_ModMenu.Component;
@@ -9,8 +12,65 @@ internal static class ESP
 {
     public static void Enabled()
     {
+        //didn't want to check camera for null in each new ESP added so moved to one
+        if (Main.MyMonoBehaviour._cameraMain != null)
+        {
+            Actors();
+            Structures();
+        }
+    }
+
+    public static void Disabled()
+    {
+        Settings.EspAnimalsEnable = false;
+        Settings.EspEnemyEnable = false;
+        Settings.EspFriendlyEnable = false;
+        Settings.EspStructureDamage = false;
+    }
+
+    /// <summary>
+    ///     ESP for Damaged Structures
+    /// </summary>
+    private static void Structures()
+    {
+        if (Settings.EspStructureDamage)
+        {
+            if (Main.MyMonoBehaviour._sonsMainScene.isLoaded && Main.MyMonoBehaviour._dirtyStructures == null)
+            {
+                var gameManagers = Main.MyMonoBehaviour._sonsMainScene.GetRootGameObjects()
+                    .FirstOrDefault(ob => ob.name == "GameManagers");
+                if (gameManagers != default)
+                    Main.MyMonoBehaviour._dirtyStructures = gameManagers
+                        .GetComponentInChildren<StructureDestructionManager>()._distortedStructures;
+            }
+
+            if (Main.MyMonoBehaviour._sonsMainScene.isLoaded && Main.MyMonoBehaviour._dirtyStructures != null)
+                foreach (var s in Main.MyMonoBehaviour._dirtyStructures)
+                {
+                    if (s == null) continue;
+                    var structurePosition = s.transform.position;
+                    var worldToScreen = Main.MyMonoBehaviour._cameraMain.WorldToScreenPoint(structurePosition);
+                    var reiDistance = Vector3.Distance(Main.MyMonoBehaviour._cameraMain.transform.position,
+                        structurePosition);
+
+                    if (worldToScreen.z >= 0f && reiDistance < 250f && Settings.EspStructureDamage)
+                    {
+                        UIHelper.DrawString(new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Repair",
+                            Color.magenta, 12);
+                        UIHelper.DrawString(new Vector2(worldToScreen.x, Screen.height - worldToScreen.y + 12),
+                            Mathf.Round(reiDistance) + "m", Color.yellow, 12);
+                    }
+                }
+        }
+    }
+
+    /// <summary>
+    ///     ESP for Actors in world
+    /// </summary>
+    private static void Actors()
+    {
         //get actors from VailActorManager
-        Il2CppSystem.Collections.Generic.List<VailActor> actors;
+        List<VailActor> actors;
         try
         {
             actors = VailActorManager._instance._activeActors;
@@ -20,17 +80,17 @@ internal static class ESP
             return;
             // ignored
         }
-        foreach (var actor in actors)
-        {
-            if (!actor) continue;
-            if (Main.MyMonoBehaviour._cameraMain != null)
+
+        if (actors != null)
+            foreach (var actor in actors)
             {
+                if (!actor) continue;
                 //get player and actors position in world, and distance from each other
                 var actorPosition = actor.transform.position;
                 var worldToScreen = Main.MyMonoBehaviour._cameraMain.WorldToScreenPoint(actorPosition);
                 var reiDistance = Vector3.Distance(Main.MyMonoBehaviour._cameraMain.transform.position, actorPosition);
                 //variable to determine if actor was drawn within section, trying to prevent drawing distance when more than one ESP is active
-                bool drawn = false;
+                var drawn = false;
                 //check the distance to actor is not too far or too close for unnecessary renders
                 if (worldToScreen.z >= 0f && reiDistance < 250f && Settings.EspEnemyEnable)
                 {
@@ -53,7 +113,8 @@ internal static class ESP
                         VailActorTypeId.Slug => UIHelper.DrawString(
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Slug", Color.red, 12),
                         VailActorTypeId.MuddyFemale => UIHelper.DrawString(
-                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Muddy Female", Color.red, 12),
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Muddy Female", Color.red,
+                            12),
                         VailActorTypeId.MuddyMale => UIHelper.DrawString(
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Muddy Male", Color.red, 12),
                         VailActorTypeId.HeavyMale => UIHelper.DrawString(
@@ -65,13 +126,16 @@ internal static class ESP
                         VailActorTypeId.John2 => UIHelper.DrawString(
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "John 2.0", Color.red, 12),
                         VailActorTypeId.FacelessMale => UIHelper.DrawString(
-                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Faceless Male", Color.red, 12),
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Faceless Male", Color.red,
+                            12),
                         VailActorTypeId.Demon => UIHelper.DrawString(
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Demon", Color.red, 12),
                         VailActorTypeId.PaintedMale => UIHelper.DrawString(
-                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Painted Male", Color.red, 12),
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Painted Male", Color.red,
+                            12),
                         VailActorTypeId.PaintedFemale => UIHelper.DrawString(
-                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Painted Female", Color.red, 12),
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Painted Female", Color.red,
+                            12),
                         VailActorTypeId.Timmy => UIHelper.DrawString(
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Timmy", Color.red, 12),
                         VailActorTypeId.Carl => UIHelper.DrawString(
@@ -92,8 +156,10 @@ internal static class ESP
                     };
 
                     if (drawn)
-                        UIHelper.DrawString(new Vector2(worldToScreen.x, Screen.height - worldToScreen.y + 12), Mathf.Round(reiDistance) + "m", Color.yellow, 12);
+                        UIHelper.DrawString(new Vector2(worldToScreen.x, Screen.height - worldToScreen.y + 12),
+                            Mathf.Round(reiDistance) + "m", Color.yellow, 12);
                 }
+
                 if (worldToScreen.z >= 0f && Settings.EspFriendlyEnable)
                 {
                     drawn = actor.TypeId switch
@@ -104,9 +170,11 @@ internal static class ESP
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Virginia", Color.cyan, 12),
                         _ => false
                     };
-                    if(drawn)
-                        UIHelper.DrawString(new Vector2(worldToScreen.x, Screen.height - worldToScreen.y + 12), Mathf.Round(reiDistance) + "m", Color.yellow, 12);
+                    if (drawn)
+                        UIHelper.DrawString(new Vector2(worldToScreen.x, Screen.height - worldToScreen.y + 12),
+                            Mathf.Round(reiDistance) + "m", Color.yellow, 12);
                 }
+
                 if (worldToScreen.z >= 0f && reiDistance < 250f && Settings.EspAnimalsEnable)
                 {
                     drawn = actor.TypeId switch
@@ -134,19 +202,22 @@ internal static class ESP
                         VailActorTypeId.Bluebird => UIHelper.DrawString(
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Bluebird", Color.green, 12),
                         VailActorTypeId.Hummingbird => UIHelper.DrawString(
-                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Hummingbird", Color.green, 12),
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Hummingbird", Color.green,
+                            12),
                         VailActorTypeId.LandTurtle => UIHelper.DrawString(
-                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Land Turtle", Color.green, 12),
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Land Turtle", Color.green,
+                            12),
                         VailActorTypeId.Shark => UIHelper.DrawString(
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Shark", Color.red, 12),
                         VailActorTypeId.KillerWhale => UIHelper.DrawString(
-                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Killer Whale", Color.red, 12),
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Killer Whale", Color.red,
+                            12),
                         _ => false
                     };
-                    if(drawn)
-                        UIHelper.DrawString(new Vector2(worldToScreen.x, Screen.height - worldToScreen.y + 12), Mathf.Round(reiDistance) + "m", Color.yellow, 12);
+                    if (drawn)
+                        UIHelper.DrawString(new Vector2(worldToScreen.x, Screen.height - worldToScreen.y + 12),
+                            Mathf.Round(reiDistance) + "m", Color.yellow, 12);
                 }
             }
-        }
     }
 }
