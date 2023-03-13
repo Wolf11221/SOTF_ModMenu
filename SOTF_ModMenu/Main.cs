@@ -29,7 +29,7 @@ namespace SOTF_ModMenu
                 //ESP Draw, placed before check for cheat visible to prevent the ESP from not rendering when GUI not visible
                 if (Settings.EspEnable)
                     ESP.Enabled();
-                else
+                else 
                     ESP.Disabled();
 
                 if(!Settings.Visible) return;
@@ -96,15 +96,16 @@ namespace SOTF_ModMenu
                 if (!LocalPlayer.IsInWorld) return;
 
                 //InfLogs
-                if(Settings.InfLogs) CPlayer.InfLogs();
+                CPlayer.InfLogs();
 
                 //InfAmmo
-                if(Settings.InfAmmo) CPlayer.InfAmmo();
+                CPlayer.InfAmmo();
                 
                 //SpeedyRun
                 CPlayer.SpeedyRun();
                 
                 //if(Settings.CaveLight)
+                //CPlayer.CaveLight();
                 CPlayer.CaveLight(Settings.CaveLight);
 
                 //Vitals
