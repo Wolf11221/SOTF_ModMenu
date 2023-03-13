@@ -7,7 +7,9 @@ using SOTF_ModMenu.Component;
 using UnityEngine;
 using TheForest.Utils;
 using SOTF_ModMenu.Utilities;
+using TheForest.Items.Inventory;
 using UnityEngine.SceneManagement;
+using Types = UnityEngine.Types;
 
 namespace SOTF_ModMenu
 {
@@ -158,7 +160,7 @@ namespace SOTF_ModMenu
                         Cursor.lockState = CursorLockMode.None;
                         return;
                     }
-                    if (LocalPlayer.IsInWorld || LocalPlayer.IsInInventory || LocalPlayer.IsConstructing || LocalPlayer.IsInMidAction)
+                    if (LocalPlayer.IsInWorld || LocalPlayer.IsInInventory || LocalPlayer.IsConstructing || LocalPlayer.IsInMidAction || LocalPlayer.CurrentView == PlayerInventory.PlayerViews.Hidden)
                     {
                         InputSystem.SetState(0, false);
                         Cursor.visible = false;
