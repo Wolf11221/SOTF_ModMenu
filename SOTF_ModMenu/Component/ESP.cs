@@ -84,7 +84,7 @@ internal static class ESP
         if (actors != null)
             foreach (var actor in actors)
             {
-                if (!actor) continue;
+                if (!actor || actor._isDead) continue;
                 //get player and actors position in world, and distance from each other
                 var actorPosition = actor.transform.position;
                 var worldToScreen = Main.MyMonoBehaviour._cameraMain.WorldToScreenPoint(actorPosition);
