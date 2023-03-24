@@ -115,7 +115,7 @@ namespace SOTF_ModMenu
                 
                 if (Settings.Health) {
                     vitals._health._currentValue = vitals._health._max;
-                    LocalPlayer.FpCharacter.allowFallDamage = false;
+                    LocalPlayer.FpCharacter._allowFallDamage = false;
                 }
                 if (Settings.Stamina)
                     vitals._stamina._currentValue = vitals._stamina._max;

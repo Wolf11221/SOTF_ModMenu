@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>SOTF_ModMenu</AssemblyName>
     <Description>Trainer for Sons Of The Forest by Nie, Config and Custom Input support added by Maalik</Description>
-    <Version>1.4.1</Version>
+    <Version>1.4.2</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <RestoreAdditionalProjectSources>
