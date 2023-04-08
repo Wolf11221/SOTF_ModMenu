@@ -1,4 +1,6 @@
 # SOTF ModMenu
+[![Thunderstore downloads](https://img.shields.io/github/downloads/Wolf11221/SOTF_ModMenu/total?label=Github%20downloads)](https://github.com/Wolf11221/SOTF_ModMenu/releases/latest)
+[![Thunderstore downloads](https://img.shields.io/badge/dynamic/json?color=yellowgreen&label=Thunderstore%20downloads&query=total_downloads&url=https%3A%2F%2Fthunderstore.io%2Fapi%2Fexperimental%2Fpackage%2FWolf11221%2FSOTF_ModMenu%2F)](https://thunderstore.io/c/sons-of-the-forest/p/Wolf11221/SOTF_ModMenu/)
 
 Press ` backquote ` to open the trainer.
 To change your keybind, edit the config file in "BepInEx\config\SOTF ModMenu.cfg". Or download [BepInEx ConfigurationManager](https://thunderstore.io/c/sons-of-the-forest/p/faulty/BepInEx_ConfigurationManager/) to change keybinds without closing the game!!!
