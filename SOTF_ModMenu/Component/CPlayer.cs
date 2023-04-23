@@ -48,7 +48,7 @@ internal static class CPlayer
     /// <summary>
     /// Enable/Disable CaveLight
     /// </summary>
-    public static void CaveLight() =>DebugConsole.Instance._caveLight(Settings.CaveLight ? "on" : "off");
+    //public static void CaveLight() => DebugConsole.Instance._caveLight(Settings.CaveLight ? "on" : "off");
 
     public static void CaveLight(bool enableLight)
     {
