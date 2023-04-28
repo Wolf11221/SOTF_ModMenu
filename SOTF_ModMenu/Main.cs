@@ -1,15 +1,12 @@
 using Construction;
 using Il2CppSystem.Collections.Generic;
-using Il2CppSystem.IO;
 using Sons.Input;
-using Sons.Items.Core;
 using SOTF_ModMenu.Component;
 using UnityEngine;
 using TheForest.Utils;
 using SOTF_ModMenu.Utilities;
 using TheForest.Items.Inventory;
 using UnityEngine.SceneManagement;
-using Types = UnityEngine.Types;
 
 namespace SOTF_ModMenu
 {
@@ -61,11 +58,9 @@ namespace SOTF_ModMenu
                 }
                 if (Settings.Stamina)
                     vitals._stamina._currentValue = vitals._stamina._max;
-                if (Settings.Cold){
-                    vitals._temperature._currentValue = vitals._temperature._max;
-                    vitals._temperature._baseValue = vitals._temperature._max;
-                    vitals._isCold = Settings.Cold;
-                }
+                
+                LocalPlayer.Stats.InteriorSpaceWarmth = Settings.Cold;
+                
                 if (Settings.Hunger)
                     vitals._fullness._currentValue = vitals._fullness._max;
                 if (Settings.Thirst)
@@ -79,6 +74,7 @@ namespace SOTF_ModMenu
                 
                 //World
                 LocalPlayer.StructureCraftingSystem.InstantBuild = Settings.InstantBuild;
+                
                 //replenishes items being placed in world. ie. logs, sticks. anything placed with building mechanic
                 LocalPlayer.Inventory.HeldOnlyItemController.InfiniteHack = Settings.InfBuild;
             }
