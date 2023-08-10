@@ -110,8 +110,6 @@ internal static class ESP
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Twins", Color.red, 12),
                         VailActorTypeId.GoldMask => UIHelper.DrawString(
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Gold Mask", Color.red, 12),
-                        VailActorTypeId.Slug => UIHelper.DrawString(
-                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Slug", Color.red, 12),
                         VailActorTypeId.MuddyFemale => UIHelper.DrawString(
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Muddy Female", Color.red,
                             12),
@@ -152,6 +150,18 @@ internal static class ESP
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Crystal", Color.red, 12),
                         VailActorTypeId.Destiny => UIHelper.DrawString(
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Destiny", Color.red, 12),
+                        VailActorTypeId.DemonBoss => UIHelper.DrawString(
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Demon Boss", Color.red, 12),
+                        VailActorTypeId.PuffyBossMale => UIHelper.DrawString(
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Puffy Boss Male", Color.red, 12),
+                        VailActorTypeId.PuffyBossFemale => UIHelper.DrawString(
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Puffy Boss Female", Color.red, 12),
+                        VailActorTypeId.BossMutant => UIHelper.DrawString(
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Boss Mutant", Color.red, 12),
+                        VailActorTypeId.CreepyVirginia => UIHelper.DrawString(
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Creepy Virginia", Color.red, 12),
+                        VailActorTypeId.Armsy => UIHelper.DrawString(
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Armsy", Color.red, 12),
                         _ => drawn
                     };
 
