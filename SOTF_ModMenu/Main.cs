@@ -52,24 +52,24 @@ namespace SOTF_ModMenu
                 //Vitals
                 if(vitals == null) vitals = LocalPlayer.Vitals;
                 
-                if (Settings.Health) {
+                if (Settings.MaxHealth) {
                     vitals._health._currentValue = vitals._health._max;
                     LocalPlayer.FpCharacter._allowFallDamage = false;
                 }
-                if (Settings.Stamina)
+                if (Settings.MaxStamina)
                     vitals._stamina._currentValue = vitals._stamina._max;
                 
-                LocalPlayer.Stats.InteriorSpaceWarmth = Settings.Cold;
+                LocalPlayer.Stats.InteriorSpaceWarmth = Settings.NoCold;
                 
-                if (Settings.Hunger)
+                if (Settings.NoHunger)
                     vitals._fullness._currentValue = vitals._fullness._max;
-                if (Settings.Thirst)
+                if (Settings.NoThirst)
                     vitals._hydration._currentValue = vitals._hydration._max;
-                if (Settings.Rested)
+                if (Settings.AlwaysRested)
                     vitals._rested._currentValue = vitals._rested._max;
-                if (Settings.Strength)
+                if (Settings.MaxStrength)
                     vitals._strength._currentValue = vitals._strength._max;
-                if (Settings.LungCapacity)
+                if (Settings.InfLungCapacity)
                     vitals.LungBreathing.CurrentLungAir = vitals.LungBreathing.MaxLungAirCapacity;
                 
                 //World
@@ -90,8 +90,8 @@ namespace SOTF_ModMenu
             {
                 if (Input.GetKeyDown(Plugin.ModMenuKeybind.Value))
                 {
-                    Settings.Visible = !Settings.Visible;
-                    if(Settings.Visible)
+                    Settings.MenuVisible = !Settings.MenuVisible;
+                    if(Settings.MenuVisible)
                     {
                         InputSystem.SetState(0, true);
                         Cursor.visible = true;
@@ -126,8 +126,8 @@ namespace SOTF_ModMenu
             {
                 try
                 {
-                    int itemID = int.Parse(Settings.TextFieldItemID);
-                    int amount = int.Parse(Settings.TextFieldAmount);
+                    int itemID = int.Parse(Settings.ItemIDTextField);
+                    int amount = int.Parse(Settings.AmountTextField);
                     LocalPlayer.Inventory.AddItem(itemID, amount);
                 }
                 catch

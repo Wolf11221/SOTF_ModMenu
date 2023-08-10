@@ -2,41 +2,39 @@
 
 public static class Settings
 {
-    public static bool Visible = false;
+    // GUI
+    public static bool MenuVisible = false;
     public static bool ShowItemIDs = false;
     public static bool HideHUD = false;
+    
+    // Player
+    public static bool MaxHealth = false;
+    public static bool MaxStamina = false;
+    public static bool MaxStrength = false;
+    public static bool InfLungCapacity = false;
+    public static bool NoCold = false;
+    public static bool NoHunger = false;
+    public static bool NoThirst = false;
+    public static bool AlwaysRested = false;
+    public static bool InfAmmo = false;
+    public static bool SpeedyRun = false;
 
-    public static bool Stamina = false;
-    public static bool Thirst = false;
-    public static bool Health = false;
-    public static bool Hunger = false;
-    public static bool Rested = false;
-    public static bool Cold = false;
-    public static bool Strength = false;
-    public static bool LungCapacity = false;
-
+    // World
     public static bool InstantBuild = false;
     public static bool InfBuild = false;
+    public static bool CaveLight = false;
 
-    //ESP Settings
+    // ESP
     public static bool EspEnable = true;
     public static bool EspAnimalsEnable = false;
     public static bool EspEnemyEnable = false;
     public static bool EspFriendlyEnable = false;
     public static bool EspStructureDamage = false;
 
-    //InfLog Settings
+    // Item Spawner
+    public static string ItemIDTextField = "392";
+    public static string AmountTextField = "1";
+    
+    // Other
     public static bool InfLogs = false;
-
-    //InfAmmo
-    public static bool InfAmmo = false;
-
-    //SpeedyRun
-    public static bool SpeedyRun = false;
-
-    //CaveLight
-    public static bool CaveLight = false;
-
-    public static string TextFieldItemID = "392";
-    public static string TextFieldAmount = "1";
 }

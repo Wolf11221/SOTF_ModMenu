@@ -23,7 +23,7 @@ public class UIManager
         else 
             ESP.Disabled();
         
-        if(!Settings.Visible) return;
+        if(!Settings.MenuVisible) return;
         GUI.color = Color.white;
         
         PlayerWindow();
@@ -41,14 +41,14 @@ public class UIManager
     private static void PlayerWindow()
     {
         UIHelper.Begin("Player", 10, 10, 165, 241, 2, 20, 2);
-        Settings.Health = UIHelper.Button("Max Health: ", Settings.Health);
-        Settings.Stamina = UIHelper.Button("Max Stamina: ", Settings.Stamina);
-        Settings.Strength = UIHelper.Button("Max Strength: ", Settings.Strength);
-        Settings.LungCapacity = UIHelper.Button("Max LungCapacity: ", Settings.LungCapacity);
-        Settings.Cold = UIHelper.Button("No Cold: ", Settings.Cold);
-        Settings.Hunger = UIHelper.Button("No Hunger: ", Settings.Hunger);
-        Settings.Thirst = UIHelper.Button("No Thirst: ", Settings.Thirst);
-        Settings.Rested = UIHelper.Button("Always Rested: ", Settings.Rested);
+        Settings.MaxHealth = UIHelper.Button("Max Health: ", Settings.MaxHealth);
+        Settings.MaxStamina = UIHelper.Button("Max Stamina: ", Settings.MaxStamina);
+        Settings.MaxStrength = UIHelper.Button("Max Strength: ", Settings.MaxStrength);
+        Settings.InfLungCapacity = UIHelper.Button("Max LungCapacity: ", Settings.InfLungCapacity);
+        Settings.NoCold = UIHelper.Button("No Cold: ", Settings.NoCold);
+        Settings.NoHunger = UIHelper.Button("No Hunger: ", Settings.NoHunger);
+        Settings.NoThirst = UIHelper.Button("No Thirst: ", Settings.NoThirst);
+        Settings.AlwaysRested = UIHelper.Button("Always Rested: ", Settings.AlwaysRested);
         Settings.InfAmmo = UIHelper.Button("Infinite Ammo: ", Settings.InfAmmo);
         Settings.SpeedyRun = UIHelper.Button("SpeedRun: ", Settings.SpeedyRun);
     }
@@ -75,8 +75,8 @@ public class UIManager
     {
         UIHelper.Begin("Item Spawner", 10, 256, 165, 84, 2, 20, 2);
         UIHelper.Label("Enter id & amount");
-        Settings.TextFieldItemID = GUI.TextField(new Rect(12, 292, 40, 20), Settings.TextFieldItemID);
-        Settings.TextFieldAmount = GUI.TextField(new Rect(55, 292, 30, 20), Settings.TextFieldAmount);
+        Settings.ItemIDTextField = GUI.TextField(new Rect(12, 292, 40, 20), Settings.ItemIDTextField);
+        Settings.AmountTextField = GUI.TextField(new Rect(55, 292, 30, 20), Settings.AmountTextField);
         if (GUI.Button(new Rect(88, 292, 85, 20), "Spawn"))
             SpawnItem();
         if (GUI.Button(new Rect(12, 314, 161, 20), "Show All ID's"))
