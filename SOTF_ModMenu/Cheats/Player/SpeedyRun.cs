@@ -1,7 +1,6 @@
 ﻿using SOTF_ModMenu.Utilities;
 using TheForest;
 using TheForest.Utils;
-using UnityEngine;
 
 namespace SOTF_ModMenu.Cheats.Player;
 

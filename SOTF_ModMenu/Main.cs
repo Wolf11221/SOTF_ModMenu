@@ -4,10 +4,11 @@ using Sons.Input;
 using SOTF_ModMenu.Cheats.Other;
 using SOTF_ModMenu.Cheats.Player;
 using SOTF_ModMenu.Cheats.World;
-using UnityEngine;
-using TheForest.Utils;
+using SOTF_ModMenu.UI;
 using SOTF_ModMenu.Utilities;
 using TheForest.Items.Inventory;
+using TheForest.Utils;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace SOTF_ModMenu
@@ -64,7 +65,7 @@ namespace SOTF_ModMenu
             
             private void OnGUI()
             {
-                UI.UIManager.Display();
+                UIManager.Display();
             }
 
             private void Update()

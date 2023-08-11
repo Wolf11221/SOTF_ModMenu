@@ -1,5 +1,4 @@
 ﻿using SOTF_ModMenu.Utilities;
-using TheForest;
 using TheForest.Utils;
 
 namespace SOTF_ModMenu.Cheats.Other;

@@ -64,5 +64,8 @@
     <Reference Include="UnityEngine.InputLegacyModule">
       <HintPath>Libs\UnityEngine.InputLegacyModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>Libs\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

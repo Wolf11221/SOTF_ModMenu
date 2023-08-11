@@ -1,13 +1,12 @@
+using System.IO;
+using System.Reflection;
 using BepInEx;
 using BepInEx.Configuration;
+using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using Il2CppInterop.Runtime.Injection;
-using System.IO;
-using System.Reflection;
 using UnityEngine;
-using BepInEx.Logging;
-using Object = UnityEngine.Object;
 
 namespace SOTF_ModMenu
 {

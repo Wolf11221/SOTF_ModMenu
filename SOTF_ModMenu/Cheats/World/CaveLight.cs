@@ -32,7 +32,7 @@ public class CaveLight : Cheat
             }
             else
             {
-                Object.Destroy(_lightGameObject);
+                Destroy(_lightGameObject);
             }
             
         }
