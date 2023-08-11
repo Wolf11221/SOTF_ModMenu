@@ -1,7 +1,9 @@
 using Construction;
 using Il2CppSystem.Collections.Generic;
 using Sons.Input;
-using SOTF_ModMenu.Component;
+using SOTF_ModMenu.Cheats.Other;
+using SOTF_ModMenu.Cheats.Player;
+using SOTF_ModMenu.Cheats.World;
 using UnityEngine;
 using TheForest.Utils;
 using SOTF_ModMenu.Utilities;
@@ -14,15 +16,20 @@ namespace SOTF_ModMenu
     {
         public class MyMonoBehaviour : MonoBehaviour
         {
-            public static Camera _cameraMain;
-            public static HashSet<Structure> _dirtyStructures;
-            public static Scene _sonsMainScene;
-            private Vitals vitals;
-            
-            private List<PlayerInventory.PlayerViews> _playerViews = new();
+            public static Camera CameraMain;
+            public static HashSet<Structure> DirtyStructures;
+            public static Scene SonsMainScene;
 
-            private void Start()
+            private List<PlayerInventory.PlayerViews> _playerViews = new();
+            
+
+            public void Start()
             {
+                foreach (Cheat cheat in Cheat.Cheats)
+                {
+                    cheat.Start();
+                }
+                
                 _playerViews.Add(PlayerInventory.PlayerViews.PlaneCrash);
                 _playerViews.Add(PlayerInventory.PlayerViews.WakingUp);
                 _playerViews.Add(PlayerInventory.PlayerViews.Inventory);
@@ -31,6 +38,30 @@ namespace SOTF_ModMenu
                 _playerViews.Add(PlayerInventory.PlayerViews.GrabBag);
             }
 
+            public void Awake()
+            {
+                // Automate this if possible 
+                
+                // Player
+                Cheat.Cheats.Add(new MaxHealth());
+                Cheat.Cheats.Add(new MaxStamina());
+                Cheat.Cheats.Add(new InfLungCapacity());
+                Cheat.Cheats.Add(new NoCold());
+                Cheat.Cheats.Add(new NoHunger());
+                Cheat.Cheats.Add(new NoThirst());
+                Cheat.Cheats.Add(new AlwaysRested());
+                Cheat.Cheats.Add(new InfAmmo());
+                Cheat.Cheats.Add(new SpeedyRun());
+                
+                // orld
+                Cheat.Cheats.Add(new InstantBuild());
+                Cheat.Cheats.Add(new InfiniteBuild());
+                Cheat.Cheats.Add(new CaveLight());
+                
+                // Other
+                Cheat.Cheats.Add(new InfiniteLogs());
+            }
+            
             private void OnGUI()
             {
                 UI.UIManager.Display();
@@ -38,66 +69,26 @@ namespace SOTF_ModMenu
 
             private void Update()
             {
+                foreach (Cheat cheat in Cheat.Cheats)
+                {
+                    cheat.Update();
+                }
+                
                 RegisterHandlers();
                 
                 //cache SonsMainScene
-                if(!_sonsMainScene.isLoaded) _sonsMainScene = SceneManager.GetSceneByName("SonsMain");
+                if(!SonsMainScene.isLoaded) SonsMainScene = SceneManager.GetSceneByName("SonsMain");
+                
                 //Cache CameraMain
-                if(_cameraMain == null) _cameraMain = Camera.main ?? null;
-                
-                //player in world
-                if (!LocalPlayer.IsInWorld) return;
-
-                //InfLogs
-                CPlayer.InfLogs();
-
-                //InfAmmo
-                CPlayer.InfAmmo();
-                
-                //SpeedyRun
-                CPlayer.SpeedyRun();
-                
-                //if(Settings.CaveLight)
-                //CPlayer.CaveLight();
-                CPlayer.CaveLight(Settings.CaveLight);
-
-                //Vitals
-                if(vitals == null) vitals = LocalPlayer.Vitals;
-                
-                if (Settings.MaxHealth) {
-                    vitals._health._currentValue = vitals._health._max;
-                    LocalPlayer.FpCharacter._allowFallDamage = false;
-                }
-                if (Settings.MaxStamina)
-                    vitals._stamina._currentValue = vitals._stamina._max;
-                
-                LocalPlayer.Stats.InteriorSpaceWarmth = Settings.NoCold;
-                
-                if (Settings.NoHunger)
-                    vitals._fullness._currentValue = vitals._fullness._max;
-                if (Settings.NoThirst)
-                    vitals._hydration._currentValue = vitals._hydration._max;
-                if (Settings.AlwaysRested)
-                    vitals._rested._currentValue = vitals._rested._max;
-                if (Settings.MaxStrength)
-                    vitals._strength._currentValue = vitals._strength._max;
-                if (Settings.InfLungCapacity)
-                    vitals.LungBreathing.CurrentLungAir = vitals.LungBreathing.MaxLungAirCapacity;
-                
-                //World
-                LocalPlayer.StructureCraftingSystem.InstantBuild = Settings.InstantBuild;
-                
-                //replenishes items being placed in world. ie. logs, sticks. anything placed with building mechanic
-                LocalPlayer.Inventory.HeldOnlyItemController.InfiniteHack = Settings.InfBuild;
+                if(CameraMain == null) CameraMain = Camera.main ?? null;
             }
             
             private void RegisterHandlers()
             {
                 ShowMenu();
                 SpawnItemHotkeyPressed();
-                HideHUDHotkeyPressed();
             }
-            
+
             private void ShowMenu()
             {
                 if (Input.GetKeyDown(Plugin.ModMenuKeybind.Value))
@@ -126,14 +117,7 @@ namespace SOTF_ModMenu
                     SpawnItem();
                 }
             }
-            private void HideHUDHotkeyPressed()
-            {
-                if (Input.GetKeyDown(Plugin.HideHUDKeybind.Value))
-                {
-                    HideHUD();
-                }
-            }
-            
+
             public static void SpawnItem()
             {
                 try
@@ -145,19 +129,6 @@ namespace SOTF_ModMenu
                 catch
                 {
                     Plugin.log.LogError("Failed to add item!");
-                }
-            }
-
-            private void HideHUD()
-            {
-                Settings.HideHUD = !Settings.HideHUD;
-                foreach (GameObject gObject in _sonsMainScene.GetRootGameObjects())
-                {
-                    if (gObject.name == "PlayerStandin")
-                    {
-                        gObject.SetActive(Settings.HideHUD);
-                        break;
-                    }
                 }
             }
         }

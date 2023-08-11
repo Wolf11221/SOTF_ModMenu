@@ -5,8 +5,7 @@ public static class Settings
     // GUI
     public static bool MenuVisible = false;
     public static bool ShowItemIDs = false;
-    public static bool HideHUD = false;
-    
+
     // Player
     public static bool MaxHealth = false;
     public static bool MaxStamina = false;

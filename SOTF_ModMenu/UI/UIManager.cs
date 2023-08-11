@@ -1,7 +1,7 @@
 ﻿using Il2CppSystem.Collections.Generic;
 using Il2CppSystem.IO;
 using Sons.Items.Core;
-using SOTF_ModMenu.Component;
+using SOTF_ModMenu.Cheats.ESP;
 using SOTF_ModMenu.Utilities;
 using UnityEngine;
 using static SOTF_ModMenu.Main.MyMonoBehaviour;
@@ -95,7 +95,7 @@ public class UIManager
     }
     private static void ShowAllIDsWindow (int windowID)
     {
-        if (_sonsMainScene.isLoaded)
+        if (SonsMainScene.isLoaded)
         {
             if (!isInitialized)
             {

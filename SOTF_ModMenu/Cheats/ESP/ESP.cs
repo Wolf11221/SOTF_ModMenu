@@ -6,14 +6,14 @@ using Sons.Ai.Vail;
 using SOTF_ModMenu.Utilities;
 using UnityEngine;
 
-namespace SOTF_ModMenu.Component;
+namespace SOTF_ModMenu.Cheats.ESP;
 
 internal static class ESP
 {
     public static void Enabled()
     {
         //didn't want to check camera for null in each new ESP added so moved to one
-        if (Main.MyMonoBehaviour._cameraMain != null)
+        if (Main.MyMonoBehaviour.CameraMain != null)
         {
             Actors();
             Structures();
@@ -35,22 +35,22 @@ internal static class ESP
     {
         if (Settings.EspStructureDamage)
         {
-            if (Main.MyMonoBehaviour._sonsMainScene.isLoaded && Main.MyMonoBehaviour._dirtyStructures == null)
+            if (Main.MyMonoBehaviour.SonsMainScene.isLoaded && Main.MyMonoBehaviour.DirtyStructures == null)
             {
-                var gameManagers = Main.MyMonoBehaviour._sonsMainScene.GetRootGameObjects()
+                var gameManagers = Main.MyMonoBehaviour.SonsMainScene.GetRootGameObjects()
                     .FirstOrDefault(ob => ob.name == "GameManagers");
                 if (gameManagers != default)
-                    Main.MyMonoBehaviour._dirtyStructures = gameManagers
+                    Main.MyMonoBehaviour.DirtyStructures = gameManagers
                         .GetComponentInChildren<StructureDestructionManager>()._distortedStructures;
             }
 
-            if (Main.MyMonoBehaviour._sonsMainScene.isLoaded && Main.MyMonoBehaviour._dirtyStructures != null)
-                foreach (var s in Main.MyMonoBehaviour._dirtyStructures)
+            if (Main.MyMonoBehaviour.SonsMainScene.isLoaded && Main.MyMonoBehaviour.DirtyStructures != null)
+                foreach (var s in Main.MyMonoBehaviour.DirtyStructures)
                 {
                     if (s == null) continue;
                     var structurePosition = s.transform.position;
-                    var worldToScreen = Main.MyMonoBehaviour._cameraMain.WorldToScreenPoint(structurePosition);
-                    var reiDistance = Vector3.Distance(Main.MyMonoBehaviour._cameraMain.transform.position,
+                    var worldToScreen = Main.MyMonoBehaviour.CameraMain.WorldToScreenPoint(structurePosition);
+                    var reiDistance = Vector3.Distance(Main.MyMonoBehaviour.CameraMain.transform.position,
                         structurePosition);
 
                     if (worldToScreen.z >= 0f && reiDistance < 250f && Settings.EspStructureDamage)
@@ -87,8 +87,8 @@ internal static class ESP
                 if (!actor || actor._isDead) continue;
                 //get player and actors position in world, and distance from each other
                 var actorPosition = actor.transform.position;
-                var worldToScreen = Main.MyMonoBehaviour._cameraMain.WorldToScreenPoint(actorPosition);
-                var reiDistance = Vector3.Distance(Main.MyMonoBehaviour._cameraMain.transform.position, actorPosition);
+                var worldToScreen = Main.MyMonoBehaviour.CameraMain.WorldToScreenPoint(actorPosition);
+                var reiDistance = Vector3.Distance(Main.MyMonoBehaviour.CameraMain.transform.position, actorPosition);
                 //variable to determine if actor was drawn within section, trying to prevent drawing distance when more than one ESP is active
                 var drawn = false;
                 //check the distance to actor is not too far or too close for unnecessary renders
