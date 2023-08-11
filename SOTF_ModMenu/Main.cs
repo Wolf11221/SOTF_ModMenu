@@ -18,6 +18,18 @@ namespace SOTF_ModMenu
             public static HashSet<Structure> _dirtyStructures;
             public static Scene _sonsMainScene;
             private Vitals vitals;
+            
+            private List<PlayerInventory.PlayerViews> _playerViews = new();
+
+            private void Start()
+            {
+                _playerViews.Add(PlayerInventory.PlayerViews.PlaneCrash);
+                _playerViews.Add(PlayerInventory.PlayerViews.WakingUp);
+                _playerViews.Add(PlayerInventory.PlayerViews.Inventory);
+                _playerViews.Add(PlayerInventory.PlayerViews.World);
+                _playerViews.Add(PlayerInventory.PlayerViews.Sleep);
+                _playerViews.Add(PlayerInventory.PlayerViews.GrabBag);
+            }
 
             private void OnGUI()
             {
@@ -98,7 +110,7 @@ namespace SOTF_ModMenu
                         Cursor.lockState = CursorLockMode.None;
                         return;
                     }
-                    if (LocalPlayer.IsInWorld || LocalPlayer.IsInInventory || LocalPlayer.IsConstructing || LocalPlayer.IsInMidAction || LocalPlayer.CurrentView == PlayerInventory.PlayerViews.Hidden)
+                    if (_playerViews.Contains(LocalPlayer.CurrentView))
                     {
                         InputSystem.SetState(0, false);
                         Cursor.visible = false;
