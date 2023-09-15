@@ -23,7 +23,6 @@ namespace SOTF_ModMenu
 
             private List<PlayerInventory.PlayerViews> _playerViews = new();
             
-
             public void Start()
             {
                 foreach (Cheat cheat in Cheat.Cheats)
