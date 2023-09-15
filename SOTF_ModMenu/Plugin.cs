@@ -1,13 +1,12 @@
+using System.IO;
+using System.Reflection;
 using BepInEx;
 using BepInEx.Configuration;
+using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using Il2CppInterop.Runtime.Injection;
-using System.IO;
-using System.Reflection;
 using UnityEngine;
-using BepInEx.Logging;
-using Object = UnityEngine.Object;
 
 namespace SOTF_ModMenu
 {
@@ -18,12 +17,11 @@ namespace SOTF_ModMenu
             MODNAME = "SOTF_ModMenu",
             AUTHOR = "Nie",
             GUID = AUTHOR + "_" + MODNAME,
-            VERSION = "1.4.2";
+            VERSION = "1.4.3";
         
         public static ConfigFile ConfigFile = new (Path.Combine(Paths.ConfigPath, "SOTF_ModMenu.cfg"), true);
         public static ConfigEntry<KeyCode> ModMenuKeybind = ConfigFile.Bind("Hotkeys", "Toggle", KeyCode.BackQuote, "Enables or disables the Mod Menu");
         public static ConfigEntry<KeyCode> SpawnItemKeybind = ConfigFile.Bind("Hotkeys", "SpawnItem", KeyCode.F8, "Spawns the currently stored item ID");
-        public static ConfigEntry<KeyCode> HideHUDKeybind = ConfigFile.Bind("Hotkeys", "HideHUD", KeyCode.None, "Hides the in game HUD");
 
         public Plugin()
         {
