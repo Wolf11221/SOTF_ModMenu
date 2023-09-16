@@ -164,6 +164,10 @@ internal static class ESP
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Armsy", Color.red, 12),
                         VailActorTypeId.Frank => UIHelper.DrawString(
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Frank", Color.red, 12),
+                        VailActorTypeId.Eddy => UIHelper.DrawString(
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Eddy", Color.red, 12),
+                        VailActorTypeId.Greg => UIHelper.DrawString(
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Greg", Color.red, 12),
                         _ => drawn
                     };
 
