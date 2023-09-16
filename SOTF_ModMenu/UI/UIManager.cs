@@ -1,5 +1,6 @@
 ﻿using Il2CppSystem.Collections.Generic;
 using Il2CppSystem.IO;
+using Sons.Input;
 using Sons.Items.Core;
 using SOTF_ModMenu.Cheats.ESP;
 using SOTF_ModMenu.Utilities;
@@ -87,6 +88,13 @@ public class UIManager
     private static void OtherWindow()
     {
         UIHelper.Begin("Other", 520, 10, 165, 100, 2, 20, 2);
+        if (UIHelper.Button("Fix Mouse"))
+        {
+            InputSystem.SetState(0, false);
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            Settings.MenuVisible = false;
+        }
         Settings.InfLogs = UIHelper.Button("Infinite Logs: ", Settings.InfLogs);
     }
 
