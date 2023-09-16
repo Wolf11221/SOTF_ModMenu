@@ -11,6 +11,7 @@ namespace SOTF_ModMenu.UI;
 public class UIManager
 {
     static List<ItemData> itemList;
+    private static string searchQuery = "";
     static bool isInitialized = false;
     private static Vector2 scrollPosition = Vector2.zero;
     private static Rect windowRect = new Rect(10, 345, 300, 500);
@@ -93,7 +94,7 @@ public class UIManager
     {
         windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)ShowAllIDsWindow, "Show ID's");
     }
-    private static void ShowAllIDsWindow (int windowID)
+    private static void ShowAllIDsWindow(int windowID)
     {
         if (SonsMainScene.isLoaded)
         {
@@ -104,21 +105,29 @@ public class UIManager
             }
         }
 
+        var text = searchQuery.Length == 0 ? "Search" : "";
+        GUI.Label(new Rect(15, 20, 300, 500), text);
+        
+        searchQuery = GUILayout.TextField(searchQuery);
+
         if (itemList == null || itemList.Count == 0)
         {
-            GUI.Label(new Rect(5, 15, 300, 500), "Item list is empty.");
+            GUI.Label(new Rect(5, 40, 300, 500), "Item list is empty.");
         }
         else
         {
             var writer = new StringWriter();
             foreach (ItemData item in itemList)
             {
-                writer.Write(item._name);
-                writer.Write(" : ");
-                writer.WriteLine(item._id);
+                if (item._name.ToLower().Contains(searchQuery.ToLower()))
+                {
+                    writer.Write(item._name);
+                    writer.Write(" : ");
+                    writer.WriteLine(item._id);
+                }
             }
 
-            GUILayout.BeginArea(new Rect(5, 15, 295, 480));
+            GUILayout.BeginArea(new Rect(5, 43, 295, 455));
             scrollPosition = GUILayout.BeginScrollView(scrollPosition);
             GUILayout.BeginVertical();
             GUILayout.Label(writer.ToString());
@@ -126,7 +135,7 @@ public class UIManager
             GUILayout.EndScrollView();
             GUILayout.EndArea();
         }
-                
+
         GUI.DragWindow(new Rect(0, 0, 10000, 20));
     }
 }
