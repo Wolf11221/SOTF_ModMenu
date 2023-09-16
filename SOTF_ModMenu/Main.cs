@@ -36,6 +36,8 @@ namespace SOTF_ModMenu
                 _playerViews.Add(PlayerInventory.PlayerViews.World);
                 _playerViews.Add(PlayerInventory.PlayerViews.Sleep);
                 _playerViews.Add(PlayerInventory.PlayerViews.GrabBag);
+                _playerViews.Add(PlayerInventory.PlayerViews.Death);
+                _playerViews.Add(PlayerInventory.PlayerViews.PlayerList);
             }
 
             public void Awake()
