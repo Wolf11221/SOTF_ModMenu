@@ -4,14 +4,9 @@
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>SOTF_ModMenu</AssemblyName>
     <Description>Trainer for Sons Of The Forest by Nie, Config and Custom Input support added by Maalik</Description>
-    <Version>1.4.3</Version>
+    <Version>1.5.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
-    <RestoreAdditionalProjectSources>
-      https://api.nuget.org/v3/index.json;
-      https://nuget.bepinex.dev/v3/index.json;
-      https://nuget.samboy.dev/v3/index.json
-    </RestoreAdditionalProjectSources>
     <RootNamespace>SOTF_ModMenu</RootNamespace>
   </PropertyGroup>
 
@@ -24,6 +19,9 @@
     </Reference>
     <Reference Include="BepInEx.Unity.IL2CPP">
       <HintPath>Libs\BepInEx.Unity.IL2CPP.dll</HintPath>
+    </Reference>
+    <Reference Include="Endnight">
+      <HintPath>Libs\Endnight.dll</HintPath>
     </Reference>
     <Reference Include="Il2CppInterop.Runtime">
       <HintPath>Libs\Il2CppInterop.Runtime.dll</HintPath>
@@ -40,8 +38,20 @@
     <Reference Include="Sons.Ai.Vail">
       <HintPath>Libs\Sons.Ai.Vail.dll</HintPath>
     </Reference>
+    <Reference Include="Sons.Cinematics">
+      <HintPath>Libs\Sons.Cinematics.dll</HintPath>
+    </Reference>
     <Reference Include="Sons.Construction">
       <HintPath>Libs\Sons.Construction.dll</HintPath>
+    </Reference>
+    <Reference Include="Sons.Electricity">
+      <HintPath>Libs\Sons.Electricity.dll</HintPath>
+    </Reference>
+    <Reference Include="Sons.FMOD">
+      <HintPath>Libs\Sons.FMOD.dll</HintPath>
+    </Reference>
+    <Reference Include="Sons.Gui">
+      <HintPath>Libs\Sons.Gui.dll</HintPath>
     </Reference>
     <Reference Include="Sons.Input">
       <HintPath>Libs\Sons.Input.dll</HintPath>

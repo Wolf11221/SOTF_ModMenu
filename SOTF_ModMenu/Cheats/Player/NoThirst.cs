@@ -1,14 +1,20 @@
-﻿using SOTF_ModMenu.Utilities;
-using TheForest.Utils;
+﻿using TheForest.Utils;
 
 namespace SOTF_ModMenu.Cheats.Player;
 
-public class NoThirst : Cheat
+public class NoThirst
 {
-    public override void Update()
+    public static bool Enabled;
+
+    public static void Toggle()
     {
-        if (!LocalPlayer.IsInWorld) return;
-        if (!Settings.NoThirst) return;
+        if (!LocalPlayer.IsInWorld) { Plugin.log.LogError($"Failed to toggle NoThirst, not in a world"); return; }
+        Enabled = !Enabled;
+    }
+    
+    public static void Update()
+    {
+        if (!Enabled || !LocalPlayer.IsInWorld) return;
 
         LocalPlayer.Vitals._hydration._currentValue = LocalPlayer.Vitals._hydration._max;
     }

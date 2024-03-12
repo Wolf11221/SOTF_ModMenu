@@ -3,147 +3,163 @@ using Il2CppSystem.IO;
 using Sons.Input;
 using Sons.Items.Core;
 using SOTF_ModMenu.Cheats.ESP;
-using SOTF_ModMenu.Utilities;
+using SOTF_ModMenu.Cheats.Other;
+using SOTF_ModMenu.Cheats.Player;
+using SOTF_ModMenu.Cheats.World;
+using TheForest;
+using TheForest.Utils;
 using UnityEngine;
-using static SOTF_ModMenu.Main.MyMonoBehaviour;
 
 namespace SOTF_ModMenu.UI;
 
 public class UIManager
 {
-    static List<ItemData> itemList;
-    private static string searchQuery = "";
-    static bool isInitialized = false;
-    private static Vector2 scrollPosition = Vector2.zero;
-    private static Rect windowRect = new Rect(10, 345, 300, 500);
+    public static bool MenuVisible;
+    public static bool IdsMenuVisible;
     
     public static void Display()
     {
         //ESP Draw, placed before check for cheat visible to prevent the ESP from not rendering when GUI not visible
-        if (Settings.EspEnable)
-            ESP.Enabled();
-        else 
-            ESP.Disabled();
+        if (ESP.Enabled)
+        {
+            ESP.Enable();
+        }
+        else
+        {
+            ESP.Disable();
+        }
         
-        if(!Settings.MenuVisible) return;
+        if(!MenuVisible) return;
+        
         GUI.color = Color.white;
         
-        PlayerWindow();
-        WorldWindow();
-        ESPWindow();
-        ItemSpawnerWindow();
-        OtherWindow();
+        // Player
+        UIHelper.Begin("Player", 10, 10, 150, 272, 0, 22, 1);
+        UIHelper.Button("God Mode", GodMode.Enabled, GodMode.Toggle);
+        UIHelper.Button("Inf Heal", InfHeal.Enabled, InfHeal.Toggle);
+        UIHelper.Button("Inf Stamina", InfStamina.Enabled, InfStamina.Toggle);
+        UIHelper.Button("Inf Lung Capacity", InfLungCapacity.Enabled, InfLungCapacity.Toggle);
+        UIHelper.Button("No Fall Damage", NoFallDamage.Enabled, NoFallDamage.Toggle);
+        UIHelper.Button("No Cold", NoCold.Enabled, NoCold.Toggle);
+        UIHelper.Button("No Hunger", NoHunger.Enabled, NoHunger.Toggle);
+        UIHelper.Button("No Thirst", NoThirst.Enabled, NoThirst.Toggle);
+        UIHelper.Button("Always Rested", AlwaysRested.Enabled, AlwaysRested.Toggle);
+        UIHelper.Button("Infinite Ammo <color=yellow><b>[Broken]</b></color>", InfAmmo.Enabled, InfAmmo.Toggle);
+        UIHelper.Button("SpeedRun", SpeedyRun.Enabled, SpeedyRun.Toggle);
         
-        GUI.color = Color.gray;
+        // World
+        UIHelper.Begin("World", 165, 10, 165, 88, 0, 22, 1);
+        UIHelper.Button("Instant Build", InstantBuild.Enabled, InstantBuild.Toggle);
+        UIHelper.Button("Infinite Build", InfiniteBuild.Enabled, InfiniteBuild.Toggle);
+        UIHelper.Button("Cave Light", CaveLight.Enabled, CaveLight.Toggle);
+
+        // ESP
+        UIHelper.Begin("ESP", 335, 10, 165, 134, 0, 22, 1);
+        UIHelper.Button("Enable", ESP.Enabled, ESP.ToggleEnabled );
+        UIHelper.Button("Animals", ESP.AnimalsEsp, ESP.ToggleAnimalsEsp );
+        UIHelper.Button("Enemies", ESP.EnemyEsp, ESP.ToggleEnemiesEsp );
+        UIHelper.Button("Friendly", ESP.FriendlyEsp, ESP.ToggleFriendlyEsp );
+        UIHelper.Button("Structure Damage", ESP.StructureDamageEsp, ESP.ToggleStructureDamageEsp );
         
-        if (Settings.ShowItemIDs)
-            ShowAllIDsWindowToggle();
-    }
-
-    private static void PlayerWindow()
-    {
-        UIHelper.Begin("Player", 10, 10, 165, 241, 2, 20, 2);
-        Settings.MaxHealth = UIHelper.Button("Max Health: ", Settings.MaxHealth);
-        Settings.MaxStamina = UIHelper.Button("Max Stamina: ", Settings.MaxStamina);
-        Settings.MaxStrength = UIHelper.Button("Max Strength: ", Settings.MaxStrength);
-        Settings.InfLungCapacity = UIHelper.Button("Max LungCapacity: ", Settings.InfLungCapacity);
-        Settings.NoCold = UIHelper.Button("No Cold: ", Settings.NoCold);
-        Settings.NoHunger = UIHelper.Button("No Hunger: ", Settings.NoHunger);
-        Settings.NoThirst = UIHelper.Button("No Thirst: ", Settings.NoThirst);
-        Settings.AlwaysRested = UIHelper.Button("Always Rested: ", Settings.AlwaysRested);
-        Settings.InfAmmo = UIHelper.Button("Infinite Ammo: ", Settings.InfAmmo);
-        Settings.SpeedyRun = UIHelper.Button("SpeedRun: ", Settings.SpeedyRun);
-    }
-
-    private static void WorldWindow()
-    {
-        UIHelper.Begin("World", 180, 10, 165, 100, 2, 20, 2);
-        Settings.InstantBuild = UIHelper.Button("Instant Build: ", Settings.InstantBuild);  
-        Settings.InfBuild = UIHelper.Button("Infinite Build: ", Settings.InfBuild);  
-        Settings.CaveLight = UIHelper.Button("Cave Light: ", Settings.CaveLight);  
-    }
-
-    private static void ESPWindow()
-    {
-        UIHelper.Begin("ESP", 350, 10, 165, 130, 2, 20, 2);
-        Settings.EspEnable = UIHelper.Button("Enabled: ", Settings.EspEnable);
-        Settings.EspAnimalsEnable = UIHelper.Button("Animals: ", Settings.EspAnimalsEnable);
-        Settings.EspEnemyEnable = UIHelper.Button("Enemies: ", Settings.EspEnemyEnable);
-        Settings.EspFriendlyEnable = UIHelper.Button("Friendly: ", Settings.EspFriendlyEnable);
-        Settings.EspStructureDamage = UIHelper.Button("Structure Damage: ", Settings.EspStructureDamage);
-    }
-
-    private static void ItemSpawnerWindow()
-    {
-        UIHelper.Begin("Item Spawner", 10, 256, 165, 84, 2, 20, 2);
-        UIHelper.Label("Enter id & amount");
-        Settings.ItemIDTextField = GUI.TextField(new Rect(12, 292, 40, 20), Settings.ItemIDTextField);
-        Settings.AmountTextField = GUI.TextField(new Rect(55, 292, 30, 20), Settings.AmountTextField);
-        if (GUI.Button(new Rect(88, 292, 85, 20), "Spawn"))
-            SpawnItem();
-        if (GUI.Button(new Rect(12, 314, 161, 20), "Show All ID's"))
-            Settings.ShowItemIDs = !Settings.ShowItemIDs;
-    }
-
-    private static void OtherWindow()
-    {
-        UIHelper.Begin("Other", 520, 10, 165, 100, 2, 20, 2);
-        if (UIHelper.Button("Fix Mouse"))
+        // Other
+        UIHelper.Begin("Other", 505, 10, 165, 88, 0, 22, 1);
+        UIHelper.Button("OG Menu Music", OgMenuMusic.Enabled, OgMenuMusic.Toggle);
+        UIHelper.Button("Infinite Logs <color=yellow><b>[Broken]</b></color>", InfiniteLogs.Enabled, InfiniteLogs.Toggle);
+        if (UIHelper.Button("Fix Stuck Mouse"))
         {
             InputSystem.SetState(0, false);
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
-            Settings.MenuVisible = false;
+            MenuVisible = false;
         }
-        Settings.InfLogs = UIHelper.Button("Infinite Logs: ", Settings.InfLogs);
-    }
+            
+        ItemSpawnerWindow();
 
-    private static void ShowAllIDsWindowToggle()
-    {
-        windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)ShowAllIDsWindow, "Show ID's");
-    }
-    private static void ShowAllIDsWindow(int windowID)
-    {
-        if (SonsMainScene.isLoaded)
+        if (IdsMenuVisible)
         {
-            if (!isInitialized)
+            AllIdsWindow();
+        }
+        
+        GUI.color = Color.gray;
+    }
+    
+    private static string _itemIdInput = "392";
+    private static string _amountInput = "1";
+    private static void ItemSpawnerWindow()
+    {
+        UIHelper.Begin("Item Spawner", 165, 103, 165, 83, 2, 20, 2);
+        UIHelper.Label("Enter <b>id</b> and <b>amount</b>");
+        
+        _itemIdInput = GUI.TextField(new Rect(167, 142, 40, 20), _itemIdInput, UIHelper.TextFieldStyle);
+        _amountInput = GUI.TextField(new Rect(209, 142, 30, 20), _amountInput, UIHelper.TextFieldStyle);
+        
+        if (GUI.Button(new Rect(241, 142, 87, 20), "Spawn", UIHelper.ButtonStyle))
+        {
+            if(!LocalPlayer.IsInWorld) return;
+            if (int.TryParse(_itemIdInput, out int itemId) && int.TryParse(_amountInput, out int amount)) {
+                LocalPlayer._instance.AddItem(itemId, amount, true);
+            } else {
+                Plugin.log.LogError($"Failed to add item with id {itemId}");
+            }
+        }
+        GUI.Label(new Rect(324, 142 + 3f, 3f, 20 - 6f), GUIContent.none, UIHelper.PanelStyle);
+
+        if (GUI.Button(new Rect(167, 164, 161, 20), "Show all ID's", UIHelper.SpawnerButtonStyle))
+        {
+            IdsMenuVisible = !IdsMenuVisible;
+        }
+
+    }
+    
+    private static Vector2 _scrollPosition = Vector2.zero;
+    private static List<ItemData> _itemList;
+    private static string _searchQuery = "";
+    private static bool _initialized;
+
+
+    private static void AllIdsWindow()
+    {
+        UIHelper.Begin("All Ids", 165, 191, 300, 500, 0, 22, 2);
+        if (LocalPlayer.IsInWorld)
+        {
+            if (!_initialized)
             {
-                itemList ??= ItemDatabaseManager.Items;
-                isInitialized = true;
+                _initialized = true;
+                _itemList ??= ItemDatabaseManager.Items;
             }
         }
 
-        var text = searchQuery.Length == 0 ? "Search" : "";
-        GUI.Label(new Rect(15, 20, 300, 500), text);
+        var text = _searchQuery.Length == 0 ? "Search" : "";
         
-        searchQuery = GUILayout.TextField(searchQuery);
-
-        if (itemList == null || itemList.Count == 0)
+        GUILayout.BeginArea(new Rect(166, 215, 295, 470));
+        
+        _searchQuery = GUILayout.TextField(_searchQuery, UIHelper.TextFieldStyle);
+        GUI.Label(new Rect(9, 1, 60, 30), text);
+        
+        if (_itemList == null || _itemList.Count == 0)
         {
-            GUI.Label(new Rect(5, 40, 300, 500), "Item list is empty.");
+            GUI.Label(new Rect(0, 22, 300, 500), "Item list is empty load a save to populate the list");
         }
         else
         {
             var writer = new StringWriter();
-            foreach (ItemData item in itemList)
+            foreach (ItemData item in _itemList)
             {
-                if (item._name.ToLower().Contains(searchQuery.ToLower()))
+                if (item._name.ToLower().Contains(_searchQuery.ToLower()))
                 {
                     writer.Write(item._name);
                     writer.Write(" : ");
                     writer.WriteLine(item._id);
                 }
             }
-
-            GUILayout.BeginArea(new Rect(5, 43, 295, 455));
-            scrollPosition = GUILayout.BeginScrollView(scrollPosition);
+            
+            _scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
             GUILayout.BeginVertical();
             GUILayout.Label(writer.ToString());
             GUILayout.EndVertical();
             GUILayout.EndScrollView();
-            GUILayout.EndArea();
         }
-
-        GUI.DragWindow(new Rect(0, 0, 10000, 20));
+        
+        GUILayout.EndArea();
     }
 }

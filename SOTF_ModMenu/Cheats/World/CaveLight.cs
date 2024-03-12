@@ -1,39 +1,52 @@
-﻿using SOTF_ModMenu.Utilities;
-using TheForest.Utils;
+﻿using TheForest.Utils;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 
 namespace SOTF_ModMenu.Cheats.World;
 
-public class CaveLight : Cheat
+public class CaveLight
 {
-    private static GameObject _lightGameObject;
-    private bool _previousValue = false;
+    public static bool Enabled;
+    private static bool _lightCreated;
+    private static GameObject _light;
     
-    public override void Update()
+    public static void Toggle()
     {
-        if (!LocalPlayer.IsInWorld) return;
+        if (!LocalPlayer.IsInWorld) { Plugin.log.LogError($"Failed to toggle CaveLight, not in a world"); return; }
+        Enabled = !Enabled;
 
-        if (Settings.CaveLight != _previousValue)
+        ToggleCaveLight();
+    }
+
+    private static void ToggleCaveLight()
+    {
+        if(!_lightCreated)
         {
-            _previousValue = Settings.CaveLight;
+            _lightCreated = true;
+                
+            _light = new GameObject("CaveLight");
+            _light.transform.SetParent(LocalPlayer.GameObject.transform);
+            _light.transform.position = LocalPlayer.GameObject.transform.position + Vector3.up * 3f;
+                
+            var lightComponent = _light.AddComponent<Light>();
+            lightComponent.intensity = 500000f;
+                
+            var additionalLightData = _light.AddComponent<HDAdditionalLightData>();
+            additionalLightData.affectsVolumetric = false;
 
-            if (Settings.CaveLight)
-            {
-                _lightGameObject = new GameObject("Light");
-                _lightGameObject.transform.SetParent(LocalPlayer.GameObject.transform);
-                _lightGameObject.transform.position = LocalPlayer.GameObject.transform.position + Vector3.up * 3f;
+            lightComponent.intensity = Enabled ? 500000f : 0;
+        }
+        else
+        {
+            _light.GetComponent<Light>().intensity = Enabled ? 500000f : 0;
+        }
+    }
 
-                var lightComponent = _lightGameObject.AddComponent<Light>();
-                lightComponent.intensity = 500000f;
-
-                var additionalLightData = _lightGameObject.AddComponent<HDAdditionalLightData>();
-                additionalLightData.affectsVolumetric = false;
-            }
-            else
-            {
-                Destroy(_lightGameObject);
-            }
+    public static void Update()
+    {
+        if (!LocalPlayer.IsInWorld && !SotfMain.SonsMainScene.isLoaded)
+        {
+            _lightCreated = false;
         }
     }
 }

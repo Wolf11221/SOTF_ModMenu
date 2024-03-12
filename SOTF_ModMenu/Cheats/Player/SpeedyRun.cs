@@ -1,22 +1,17 @@
-﻿using SOTF_ModMenu.Utilities;
-using TheForest;
+﻿using TheForest;
 using TheForest.Utils;
 
 namespace SOTF_ModMenu.Cheats.Player;
 
-public class SpeedyRun : Cheat
+public class SpeedyRun
 {
-    private bool _previousValue = false;
-    
-    public override void Update()
+    public static bool Enabled;
+
+    public static void Toggle()
     {
-        if (!LocalPlayer.IsInWorld) return;
-
-        if (Settings.SpeedyRun != _previousValue)
-        {
-            _previousValue = Settings.SpeedyRun;
-
-            DebugConsole.Instance._speedyrun(Settings.SpeedyRun ? "on" : "off");
-        }
+        if (!LocalPlayer.IsInWorld) { Plugin.log.LogError($"Failed to toggle SpeedyRun, not in a world"); return; }
+        Enabled = !Enabled;
+        
+        DebugConsole.Instance._speedyrun(Enabled ? "on" : "off");
     }
 }

@@ -1,21 +1,18 @@
-﻿using SOTF_ModMenu.Utilities;
+﻿using Sons.Crafting.Structures;
 using TheForest.Utils;
 
 namespace SOTF_ModMenu.Cheats.World;
 
-public class InstantBuild : Cheat
+public class InstantBuild
 {
-    private bool _previousValue = false;
+    public static bool Enabled;
     
-    public override void Update()
+    public static void Toggle()
     {
-        if (!LocalPlayer.IsInWorld) return;
+        if (!LocalPlayer.IsInWorld) { Plugin.log.LogError($"Failed to toggle InstantBuild, not in a world"); return; }
+        Enabled = !Enabled;
 
-        if (Settings.InstantBuild != _previousValue)
-        {
-            _previousValue = Settings.InstantBuild;
-
-            LocalPlayer.StructureCraftingSystem.InstantBuild = Settings.InstantBuild;
-        }
+        //LocalPlayer.StructureCraftingSystem.InstantBuild = Enabled;
+        StructureCraftingSystem._instance.InstantBuild = Enabled;
     }
 }

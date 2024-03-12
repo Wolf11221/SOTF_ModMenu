@@ -1,14 +1,20 @@
-﻿using SOTF_ModMenu.Utilities;
-using TheForest.Utils;
+﻿using TheForest.Utils;
 
 namespace SOTF_ModMenu.Cheats.Player;
 
-public class InfLungCapacity : Cheat
+public class InfLungCapacity
 {
-    public override void Update()
+    public static bool Enabled;
+
+    public static void Toggle()
     {
-        if (!LocalPlayer.IsInWorld) return;
-        if (!Settings.InfLungCapacity) return;
+        if (!LocalPlayer.IsInWorld) { Plugin.log.LogError($"Failed to toggle InfLungCapacity, not in a world"); return; }
+        Enabled = !Enabled;
+    }
+    
+    public static void Update()
+    {
+        if (!Enabled || !LocalPlayer.IsInWorld) return;
 
         LocalPlayer.Vitals.LungBreathing.CurrentLungAir = LocalPlayer.Vitals.LungBreathing.MaxLungAirCapacity;
     }
