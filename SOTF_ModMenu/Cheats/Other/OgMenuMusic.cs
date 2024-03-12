@@ -15,6 +15,7 @@ public class OgMenuMusic
     
     public static void Toggle()
     {
+        if(SotfMain.SonsMainScene.isLoaded) return;
         Enabled = !Enabled;
         Plugin.OgMenu.Value = Enabled;
     }
