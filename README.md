@@ -1,32 +1,34 @@
 # SOTF ModMenu
 
 Press ` backquote ` to open the trainer.
-To change your keybind, edit the config file in "BepInEx\config\SOTF ModMenu.cfg". Or download [BepInEx ConfigurationManager](https://thunderstore.io/c/sons-of-the-forest/p/faulty/BepInEx_ConfigurationManager/) to change keybinds without closing the game!!!
+To change your keybind, edit the config file in "BepInEx\config\SOTF ModMenu.cfg". Or download [BepInEx ConfigurationManager](https://thunderstore.io/c/sons-of-the-forest/p/faulty/BepInEx_ConfigurationManager/) to change keybinds without closing the game!
 
 Requires [BepInEx](https://thunderstore.io/c/sons-of-the-forest/p/BepInEx/BepInExPack_IL2CPP/)
 
 Recommended to allow keybind swaps ingame [BepInEx ConfigurationManager](https://thunderstore.io/c/sons-of-the-forest/p/faulty/BepInEx_ConfigurationManager/)
 
-![SOTF ModMenu](https://i.imgur.com/kWLsklk.jpg)
+![SOTF ModMenu](https://i.imgur.com/Vfk7OQo.png)
 
 ## Features:
 
-* Max Health
-* Max Stamina
-* Max Strength
-* Max Lung Capacity
+* God Mode
+* Inf Heal
+* Inf Stamina
+* Inf Lung Capacity
+* No Fall Damage
 * No Cold
 * No Hunger
 * No Thirst
 * Always Rested
 * Instant Build
 * infinite Logs
-* Instant Build
 * Infinite Ammo
 * Item Spawner
 * Cave Light
 * SpeedRun
 * ESP
+* OG Menu Music
+* Nice UI
 
 And more to come!
 
