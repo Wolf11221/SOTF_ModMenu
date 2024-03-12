@@ -108,15 +108,13 @@ public class UIManager
         {
             IdsMenuVisible = !IdsMenuVisible;
         }
-
     }
     
     private static Vector2 _scrollPosition = Vector2.zero;
     private static List<ItemData> _itemList;
     private static string _searchQuery = "";
     private static bool _initialized;
-
-
+    
     private static void AllIdsWindow()
     {
         UIHelper.Begin("All Ids", 165, 191, 300, 500, 0, 22, 2);

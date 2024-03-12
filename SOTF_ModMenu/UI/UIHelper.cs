@@ -35,7 +35,6 @@ public class UIHelper
      * - Allow gui customization or preset style selection
      */
     
-    
     public static void InitializeStyles()
     {
         _panelOff =  MakeTex(1, 1, new Color(82/255f, 82/255f, 82/255f));

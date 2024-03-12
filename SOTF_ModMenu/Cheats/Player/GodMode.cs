@@ -24,7 +24,6 @@ public class GodMode
                 _gotMaxHealthValue = true;
                 _maxHealthBefore = LocalPlayer.Vitals._health._max;
             }
-            
         }
         else
         {
