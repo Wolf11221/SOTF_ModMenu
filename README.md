@@ -3,32 +3,34 @@
 [![Thunderstore downloads](https://img.shields.io/badge/dynamic/json?color=yellowgreen&label=Thunderstore%20downloads&query=total_downloads&url=https%3A%2F%2Fthunderstore.io%2Fapi%2Fexperimental%2Fpackage%2FWolf11221%2FSOTF_ModMenu%2F)](https://thunderstore.io/c/sons-of-the-forest/p/Wolf11221/SOTF_ModMenu/)
 
 Press ` backquote ` to open the trainer.
-To change your keybind, edit the config file in "BepInEx\config\SOTF ModMenu.cfg". Or download [BepInEx ConfigurationManager](https://thunderstore.io/c/sons-of-the-forest/p/faulty/BepInEx_ConfigurationManager/) to change keybinds without closing the game!!!
+To change your keybind, edit the config file in "BepInEx\config\SOTF ModMenu.cfg". Or download [BepInEx ConfigurationManager](https://thunderstore.io/c/sons-of-the-forest/p/faulty/BepInEx_ConfigurationManager/) to change keybinds without closing the game!
 
 Requires [BepInEx](https://thunderstore.io/c/sons-of-the-forest/p/BepInEx/BepInExPack_IL2CPP/)
 
 Recommended to allow keybind swaps ingame [BepInEx ConfigurationManager](https://thunderstore.io/c/sons-of-the-forest/p/faulty/BepInEx_ConfigurationManager/)
 
-![SOTF ModMenu](https://i.imgur.com/kWLsklk.jpg)
+![SOTF ModMenu](https://i.imgur.com/Vfk7OQo.png)
 
 ## Features:
 
-* Max Health
-* Max Stamina
-* Max Strength
-* Max Lung Capacity
+* God Mode
+* Inf Heal
+* Inf Stamina
+* Inf Lung Capacity
+* No Fall Damage
 * No Cold
 * No Hunger
 * No Thirst
 * Always Rested
 * Instant Build
 * infinite Logs
-* Instant Build
 * Infinite Ammo
 * Item Spawner
 * Cave Light
 * SpeedRun
 * ESP
+* OG Menu Music
+* Nice UI
 
 And more to come!
 

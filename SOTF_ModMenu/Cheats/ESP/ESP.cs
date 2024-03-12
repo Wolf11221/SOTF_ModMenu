@@ -3,57 +3,96 @@ using System.Linq;
 using Construction;
 using Il2CppSystem.Collections.Generic;
 using Sons.Ai.Vail;
-using SOTF_ModMenu.Utilities;
+using SOTF_ModMenu.UI;
+using TheForest.Utils;
 using UnityEngine;
 
 namespace SOTF_ModMenu.Cheats.ESP;
 
 internal static class ESP
 {
-    public static void Enabled()
+    public static bool Enabled;
+
+    public static bool AnimalsEsp;
+    public static bool EnemyEsp;
+    public static bool FriendlyEsp;
+    public static bool StructureDamageEsp;
+    
+    public static void Enable()
     {
         //didn't want to check camera for null in each new ESP added so moved to one
-        if (Main.MyMonoBehaviour.CameraMain != null)
+        if (SotfMain.CameraMain != null)
         {
             Actors();
             Structures();
         }
     }
 
-    public static void Disabled()
+    public static void Disable()
     {
-        Settings.EspAnimalsEnable = false;
-        Settings.EspEnemyEnable = false;
-        Settings.EspFriendlyEnable = false;
-        Settings.EspStructureDamage = false;
+        AnimalsEsp = false;
+        EnemyEsp = false;
+        FriendlyEsp = false;
+        StructureDamageEsp = false;
     }
 
+    // I need to do this so esp can work sorry
+    public static void ToggleEnabled()
+    {
+        if (!LocalPlayer.IsInWorld) { Plugin.log.LogError($"Failed to toggle ESP, not in a world"); return; }
+        Enabled = !Enabled;
+    }
+    
+    public static void ToggleAnimalsEsp()
+    {
+        if (!LocalPlayer.IsInWorld) { Plugin.log.LogError($"Failed to toggle ESP, not in a world"); return; }
+        AnimalsEsp = !AnimalsEsp;
+    }
+    
+    public static void ToggleEnemiesEsp()
+    {
+        if (!LocalPlayer.IsInWorld) { Plugin.log.LogError($"Failed to toggle ESP, not in a world"); return; }
+        EnemyEsp = !EnemyEsp;
+    }
+    
+    public static void ToggleFriendlyEsp()
+    {
+        if (!LocalPlayer.IsInWorld) { Plugin.log.LogError($"Failed to toggle ESP, not in a world"); return; }
+        FriendlyEsp = !FriendlyEsp;
+    }
+    
+    public static void ToggleStructureDamageEsp()
+    {
+        if (!LocalPlayer.IsInWorld) { Plugin.log.LogError($"Failed to toggle ESP, not in a world"); return; }
+        StructureDamageEsp = !StructureDamageEsp;
+    }
+    
     /// <summary>
     ///     ESP for Damaged Structures
     /// </summary>
     private static void Structures()
     {
-        if (Settings.EspStructureDamage)
+        if (StructureDamageEsp)
         {
-            if (Main.MyMonoBehaviour.SonsMainScene.isLoaded && Main.MyMonoBehaviour.DirtyStructures == null)
+            if (SotfMain.SonsMainScene.isLoaded && SotfMain.DirtyStructures == null)
             {
-                var gameManagers = Main.MyMonoBehaviour.SonsMainScene.GetRootGameObjects()
+                var gameManagers = SotfMain.SonsMainScene.GetRootGameObjects()
                     .FirstOrDefault(ob => ob.name == "GameManagers");
                 if (gameManagers != default)
-                    Main.MyMonoBehaviour.DirtyStructures = gameManagers
+                    SotfMain.DirtyStructures = gameManagers
                         .GetComponentInChildren<StructureDestructionManager>()._distortedStructures;
             }
 
-            if (Main.MyMonoBehaviour.SonsMainScene.isLoaded && Main.MyMonoBehaviour.DirtyStructures != null)
-                foreach (var s in Main.MyMonoBehaviour.DirtyStructures)
+            if (SotfMain.SonsMainScene.isLoaded && SotfMain.DirtyStructures != null)
+                foreach (var s in SotfMain.DirtyStructures)
                 {
                     if (s == null) continue;
                     var structurePosition = s.transform.position;
-                    var worldToScreen = Main.MyMonoBehaviour.CameraMain.WorldToScreenPoint(structurePosition);
-                    var reiDistance = Vector3.Distance(Main.MyMonoBehaviour.CameraMain.transform.position,
+                    var worldToScreen = SotfMain.CameraMain.WorldToScreenPoint(structurePosition);
+                    var reiDistance = Vector3.Distance(SotfMain.CameraMain.transform.position,
                         structurePosition);
 
-                    if (worldToScreen.z >= 0f && reiDistance < 250f && Settings.EspStructureDamage)
+                    if (worldToScreen.z >= 0f && reiDistance < 250f && StructureDamageEsp)
                     {
                         UIHelper.DrawString(new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Repair",
                             Color.magenta, 12);
@@ -87,12 +126,12 @@ internal static class ESP
                 if (!actor || actor._isDead) continue;
                 //get player and actors position in world, and distance from each other
                 var actorPosition = actor.transform.position;
-                var worldToScreen = Main.MyMonoBehaviour.CameraMain.WorldToScreenPoint(actorPosition);
-                var reiDistance = Vector3.Distance(Main.MyMonoBehaviour.CameraMain.transform.position, actorPosition);
+                var worldToScreen = SotfMain.CameraMain.WorldToScreenPoint(actorPosition);
+                var reiDistance = Vector3.Distance(SotfMain.CameraMain.transform.position, actorPosition);
                 //variable to determine if actor was drawn within section, trying to prevent drawing distance when more than one ESP is active
                 var drawn = false;
                 //check the distance to actor is not too far or too close for unnecessary renders
-                if (worldToScreen.z >= 0f && reiDistance < 250f && Settings.EspEnemyEnable)
+                if (worldToScreen.z >= 0f && reiDistance < 250f && EnemyEsp)
                 {
                     drawn = actor.TypeId switch
                     {
@@ -111,8 +150,7 @@ internal static class ESP
                         VailActorTypeId.GoldMask => UIHelper.DrawString(
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Gold Mask", Color.red, 12),
                         VailActorTypeId.MuddyFemale => UIHelper.DrawString(
-                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Muddy Female", Color.red,
-                            12),
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Muddy Female", Color.red, 12),
                         VailActorTypeId.MuddyMale => UIHelper.DrawString(
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Muddy Male", Color.red, 12),
                         VailActorTypeId.HeavyMale => UIHelper.DrawString(
@@ -124,16 +162,13 @@ internal static class ESP
                         VailActorTypeId.John2 => UIHelper.DrawString(
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "John 2.0", Color.red, 12),
                         VailActorTypeId.FacelessMale => UIHelper.DrawString(
-                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Faceless Male", Color.red,
-                            12),
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Faceless Male", Color.red, 12),
                         VailActorTypeId.Demon => UIHelper.DrawString(
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Demon", Color.red, 12),
                         VailActorTypeId.PaintedMale => UIHelper.DrawString(
-                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Painted Male", Color.red,
-                            12),
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Painted Male", Color.red, 12),
                         VailActorTypeId.PaintedFemale => UIHelper.DrawString(
-                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Painted Female", Color.red,
-                            12),
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Painted Female", Color.red, 12),
                         VailActorTypeId.Timmy => UIHelper.DrawString(
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Timmy", Color.red, 12),
                         VailActorTypeId.Carl => UIHelper.DrawString(
@@ -164,6 +199,20 @@ internal static class ESP
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Armsy", Color.red, 12),
                         VailActorTypeId.Frank => UIHelper.DrawString(
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Frank", Color.red, 12),
+                        VailActorTypeId.Eddy => UIHelper.DrawString(
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Eddy", Color.red, 12),
+                        VailActorTypeId.Greg => UIHelper.DrawString(
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Greg", Color.red, 12),
+                        VailActorTypeId.Henry => UIHelper.DrawString(
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Henry", Color.red, 12),
+                        VailActorTypeId.Igor => UIHelper.DrawString(
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Igor", Color.red, 12),
+                        VailActorTypeId.Elise => UIHelper.DrawString(
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Elise", Color.red, 12),
+                        VailActorTypeId.Legsy => UIHelper.DrawString(
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Legsy", Color.red, 12),
+                        VailActorTypeId.Holey => UIHelper.DrawString(
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Holey", Color.red, 12),
                         _ => drawn
                     };
 
@@ -172,7 +221,7 @@ internal static class ESP
                             Mathf.Round(reiDistance) + "m", Color.yellow, 12);
                 }
 
-                if (worldToScreen.z >= 0f && Settings.EspFriendlyEnable)
+                if (worldToScreen.z >= 0f && FriendlyEsp)
                 {
                     drawn = actor.TypeId switch
                     {
@@ -187,7 +236,7 @@ internal static class ESP
                             Mathf.Round(reiDistance) + "m", Color.yellow, 12);
                 }
 
-                if (worldToScreen.z >= 0f && reiDistance < 250f && Settings.EspAnimalsEnable)
+                if (worldToScreen.z >= 0f && reiDistance < 250f && AnimalsEsp)
                 {
                     drawn = actor.TypeId switch
                     {
@@ -214,16 +263,15 @@ internal static class ESP
                         VailActorTypeId.Bluebird => UIHelper.DrawString(
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Bluebird", Color.green, 12),
                         VailActorTypeId.Hummingbird => UIHelper.DrawString(
-                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Hummingbird", Color.green,
-                            12),
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Hummingbird", Color.green, 12),
                         VailActorTypeId.LandTurtle => UIHelper.DrawString(
-                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Land Turtle", Color.green,
-                            12),
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Land Turtle", Color.green, 12),
+                        VailActorTypeId.Raccoon => UIHelper.DrawString(
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Raccoon", Color.green, 12),
                         VailActorTypeId.Shark => UIHelper.DrawString(
                             new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Shark", Color.red, 12),
                         VailActorTypeId.KillerWhale => UIHelper.DrawString(
-                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Killer Whale", Color.red,
-                            12),
+                            new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), "Killer Whale", Color.red, 12),
                         _ => false
                     };
                     if (drawn)

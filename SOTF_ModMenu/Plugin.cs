@@ -17,12 +17,12 @@ namespace SOTF_ModMenu
             MODNAME = "SOTF_ModMenu",
             AUTHOR = "Nie",
             GUID = AUTHOR + "_" + MODNAME,
-            VERSION = "1.4.3";
+            VERSION = "1.5.0";
         
         public static ConfigFile ConfigFile = new (Path.Combine(Paths.ConfigPath, "SOTF_ModMenu.cfg"), true);
-        public static ConfigEntry<KeyCode> ModMenuKeybind = ConfigFile.Bind("Hotkeys", "Toggle", KeyCode.BackQuote, "Enables or disables the Mod Menu");
-        public static ConfigEntry<KeyCode> SpawnItemKeybind = ConfigFile.Bind("Hotkeys", "SpawnItem", KeyCode.F8, "Spawns the currently stored item ID");
-
+        public static ConfigEntry<KeyCode> ModKey = ConfigFile.Bind("Hotkeys", "Toggle", KeyCode.BackQuote, "Toggles menu visibility");
+        public static ConfigEntry<bool> OgMenu = ConfigFile.Bind("Other", "Enabled", false, "Plays the og menu music form The Forest");
+        
         public Plugin()
         {
             log = Log;
@@ -32,15 +32,15 @@ namespace SOTF_ModMenu
         {
             try
             {
-                ClassInjector.RegisterTypeInIl2Cpp<Main.MyMonoBehaviour>();
-                GameObject gameObject = new GameObject("CoolObject");
-                gameObject.AddComponent<Main.MyMonoBehaviour>();
+                ClassInjector.RegisterTypeInIl2Cpp<SotfMain>();
+                GameObject gameObject = new GameObject("SotfBehavior");
+                gameObject.AddComponent<SotfMain>();
                 gameObject.hideFlags = HideFlags.HideAndDontSave;
                 Object.DontDestroyOnLoad(gameObject);
             }
             catch
             {
-                log.LogError($"FAILED to Register Il2Cpp Type: MyMonoBehaviour!");
+                log.LogError($"FAILED to Register Il2Cpp Type!");
             }
             try
             {
@@ -50,9 +50,8 @@ namespace SOTF_ModMenu
             {
                 log.LogError($"FAILED to register patches!");
             }
-            log.LogInfo($"ModMenu toggle keybind set to: {ModMenuKeybind.Value}");
         }
-
+        
         public static ManualLogSource log;
     }
 }

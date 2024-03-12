@@ -1,21 +1,16 @@
-﻿using SOTF_ModMenu.Utilities;
-using TheForest.Utils;
+﻿using TheForest.Utils;
 
 namespace SOTF_ModMenu.Cheats.Player;
 
-public class NoCold : Cheat
+public class NoCold
 {
-    private bool _previousValue = false;
-    
-    public override void Update()
+    public static bool Enabled;
+
+    public static void Toggle()
     {
-        if (!LocalPlayer.IsInWorld) return;
+        if (!LocalPlayer.IsInWorld) { Plugin.log.LogError($"Failed to toggle NoCold, not in a world"); return; }
+        Enabled = !Enabled;
 
-        if (Settings.NoCold != _previousValue)
-        {
-            _previousValue = Settings.NoCold;
-
-            LocalPlayer.Stats.InteriorSpaceWarmth = Settings.NoCold;
-        }
+        LocalPlayer.Stats.InteriorSpaceWarmth = Enabled;
     }
 }

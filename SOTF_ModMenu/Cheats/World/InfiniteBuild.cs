@@ -1,21 +1,16 @@
-﻿using SOTF_ModMenu.Utilities;
-using TheForest.Utils;
+﻿using TheForest.Utils;
 
 namespace SOTF_ModMenu.Cheats.World;
 
-public class InfiniteBuild : Cheat
+public class InfiniteBuild
 {
-    private bool _previousValue = false;
-    
-    public override void Update()
+    public static bool Enabled;
+
+    public static void Toggle()
     {
-        if (!LocalPlayer.IsInWorld) return;
-
-        if (Settings.InfBuild != _previousValue)
-        {
-            _previousValue = Settings.InfBuild;
-
-            LocalPlayer.Inventory.HeldOnlyItemController.InfiniteHack = Settings.InfBuild;
-        }
+        if (!LocalPlayer.IsInWorld) { Plugin.log.LogError($"Failed to toggle InfiniteBuild, not in a world"); return; }
+        Enabled = !Enabled;
+        
+        LocalPlayer.Inventory.HeldOnlyItemController.InfiniteHack = Enabled;
     }
 }
